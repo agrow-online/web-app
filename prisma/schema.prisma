@@ -10,10 +10,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Company {
+  id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name     String
+  location String
+  isActive Boolean
+
+  employees User[] @relation(name: "Employees")
+  owner     User   @relation(name: "Owner", fields: [userId], references: [id])
+  userId    String @unique @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("companies")
+}
+
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email String @unique
+  name  String @default("")
+
+  role Role
+
+  ownedCompany   Company? @relation(name: "Owner")
+  ownedCompanyId String   @unique @db.Uuid
+
+  company   Company @relation(name: "Employees", fields: [companyId], references: [id])
+  companyId String  @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   @@map("users")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
 }
