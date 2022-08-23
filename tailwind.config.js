@@ -5,7 +5,12 @@ module.exports = {
   plugins: [require('flowbite/plugin'), require('flowbite-typography')],
   theme: {
     fontFamily: {
-      sans: ['Roboto', 'sans-serif'],
+      sans: ['Figtree', 'Roboto', 'sans-serif'],
+    },
+
+    fontWeight: {
+      extrabold: 700,
+      normal: 500,
     },
   },
 };
