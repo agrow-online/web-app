@@ -35,8 +35,14 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-data/
 # Sentry
 .sentryclirc
 sentry.properties
 
+# IDE
+.history
+.vscode
+.idea
+
+# Docker
+data/
