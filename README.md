@@ -1,10 +1,18 @@
 # Agropreneur Backoffice
 
+<!-- TODO description -->
+
+## Requirements
+
 <!-- TODO -->
 
 ## Get started
 
+<!-- TODO -->
+
 ### Local development
+
+<!-- TODO enhance -->
 
 ```sh
 $ yarn
