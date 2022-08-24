@@ -12,5 +12,9 @@ module.exports = {
       extrabold: 700,
       normal: 500,
     },
+
+    button: {
+      background: 'red',
+    },
   },
 };
