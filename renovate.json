@@ -1,0 +1,18 @@
+{
+  "extends": ["config:base", ":timezone(Europe/Berlin)"],
+  "schedule": ["before 7am on Monday"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["*"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "all minor dependencies",
+      "groupSlug": "all-minor-patch",
+      "labels": ["dependencies", "minor changes"]
+    },
+    {
+      "matchPackagePatterns": ["*"],
+      "matchUpdateTypes": ["major"],
+      "labels": ["dependencies", "breaking changes"]
+    }
+  ]
+}
