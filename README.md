@@ -4,6 +4,9 @@
 
 ## Requirements
 
+- Supabase CLI (follow the official instructions [here](https://supabase.com/docs/guides/cli/local-development))
+- Node > 16
+
 <!-- TODO -->
 
 ## Get started
@@ -22,5 +25,5 @@ $ yarn dev
 Separate terminal:
 
 ```sh
-$ docker-compose up
+$ supabase start
 ```
