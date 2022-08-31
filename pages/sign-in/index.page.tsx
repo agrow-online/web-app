@@ -78,6 +78,7 @@ export const getServerSideProps = withPageAuth({
   authRequired: false,
   async getServerSideProps(ctx) {
     const { user } = await getUser(ctx);
+
     if (user) {
       return {
         redirect: {
