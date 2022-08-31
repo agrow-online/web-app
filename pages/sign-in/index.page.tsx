@@ -1,10 +1,9 @@
 import { NextPage } from 'next';
 import { useState, MouseEvent } from 'react';
-import { supabase } from '../../utils/supabase';
-import tw from 'twin.macro';
-import styled from 'styled-components';
 import toast from 'react-hot-toast';
 import Head from 'next/head';
+import { getUser, withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { supabase } from '../../utils/supabase';
 
 // TODO cleanup
 const SignInPage: NextPage = () => {
@@ -74,3 +73,20 @@ const SignInPage: NextPage = () => {
 };
 
 export default SignInPage;
+
+export const getServerSideProps = withPageAuth({
+  authRequired: false,
+  async getServerSideProps(ctx) {
+    const { user } = await getUser(ctx);
+    if (user) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/app/dashboard',
+        },
+      };
+    }
+
+    return { props: {} };
+  },
+});

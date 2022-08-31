@@ -1,3 +1,4 @@
+import { withPageAuth, getUser } from '@supabase/auth-helpers-nextjs';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -32,3 +33,20 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps = withPageAuth({
+  authRequired: false,
+  async getServerSideProps(ctx) {
+    const { user } = await getUser(ctx);
+    if (user) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/app/dashboard',
+        },
+      };
+    }
+
+    return { props: {} };
+  },
+});
