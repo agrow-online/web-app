@@ -10,34 +10,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Company {
-  id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+enum Unit {
+  ML
+  L
+  G
+  KG
+  ITEM
+}
+
+model Business {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
   name     String
   location String
   isActive Boolean
 
-  employees User[] @relation(name: "Employees")
-  owner     User   @relation(name: "Owner", fields: [userId], references: [id])
-  userId    String @unique @db.Uuid
+  employees   User[] @relation(name: "Employees")
+  owner       User   @relation(name: "Owner", fields: [ownerUserId], references: [id])
+  ownerUserId String @unique @db.Uuid
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-  @@map("companies")
+  @@map("businesses")
 }
 
 model User {
-  id    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
   email String @unique
   name  String @default("")
 
-  role Role
-
-  ownedCompany   Company? @relation(name: "Owner")
-  ownedCompanyId String   @unique @db.Uuid
-
-  company   Company @relation(name: "Employees", fields: [companyId], references: [id])
-  companyId String  @db.Uuid
+  role            Role      @default(EMPLOYEE)
+  ownedBusiness   Business? @relation(name: "Owner")
+  ownedBusinessId String?   @unique @db.Uuid
+  business        Business  @relation(name: "Employees", fields: [businessId], references: [id])
+  businessId      String    @db.Uuid
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -45,7 +58,85 @@ model User {
   @@map("users")
 }
 
-enum Role {
-  ADMIN
-  EMPLOYEE
+model Product {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  name        String @unique
+  description String @default("")
+  image       String @default("")
+
+  brand         ProductBrand       @relation(fields: [brandId], references: [id])
+  brandId       String             @db.Uuid
+  category      ProductCategory    @relation(fields: [categoryId], references: [id])
+  categoryId    String             @db.Uuid
+  subCategory   ProductSubCategory @relation(fields: [subCategoryId], references: [id])
+  subCategoryId String             @db.Uuid
+  variants      ProductVariant[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("products")
+}
+
+model ProductVariant {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  name     String @default("")
+  image    String @default("")
+  quantity Float?
+  unit     Unit?
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("product_variants")
+}
+
+model ProductBrand {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  name        String @unique
+  description String @default("")
+
+  products Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("product_brands")
+}
+
+model ProductCategory {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  name String @unique
+
+  subCategories ProductSubCategory[]
+  products      Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("product_categories")
+}
+
+model ProductSubCategory {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  technicalName   String
+  descriptiveName String @unique
+  description     String @default("")
+
+  category   ProductCategory @relation(fields: [categoryId], references: [id])
+  categoryId String          @db.Uuid
+  products   Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("product_sub_categories")
 }
