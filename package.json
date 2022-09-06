@@ -16,6 +16,9 @@
     "prisma:seed:production": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' dotenv -e .env.production.local -- ts-node prisma/seed.ts"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.3.1",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@next/bundle-analyzer": "12.2.5",
     "@prisma/client": "4.2.1",
     "@sentry/nextjs": "7.11.1",
@@ -23,6 +26,7 @@
     "@supabase/auth-helpers-react": "0.2.3",
     "@supabase/supabase-js": "1.35.6",
     "flowbite": "1.5.2",
+    "framer-motion": "^7.2.1",
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
