@@ -29,7 +29,7 @@ export const Screen: ScreenComponent<ScreenProps> = ({
   return (
     <ScreenContext.Provider value={{ isMobile, isFooterPadded, withNavigation, contentOnly }}>
       <VStack
-        justifyItems={contentOnly ? 'center' : 'stretch'}
+        justifyContent={contentOnly ? 'center' : 'stretch'}
         height="100vh"
         padding={[0, null, 8]}
       >

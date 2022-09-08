@@ -47,14 +47,14 @@ const SignInPage: NextPage = () => {
 
   return (
     <Screen contentOnly>
-      <Screen.Content>
-        <Head>
-          <title>Sign in - Agropreneur</title>
-        </Head>
+      <Head>
+        <title>Sign in - Agropreneur</title>
+      </Head>
 
-        <h2>Agropreneur</h2>
-        <VStack>
-          <FormControl>
+      <Screen.Content>
+        <VStack gap={10} maxWidth={['full', null, 'md']} margin="auto">
+          <h2>Agropreneur</h2>
+          <FormControl gap={10}>
             <FormLabel>Email</FormLabel>
 
             <Input
@@ -65,7 +65,9 @@ const SignInPage: NextPage = () => {
               onChange={({ target: { value } }) => setEmail(value)}
               required
             />
-            <FormHelperText>We'll never share your email.</FormHelperText>
+            <FormHelperText>
+              You'll receive a magic link in your mail inbox to login without a password.
+            </FormHelperText>
           </FormControl>
           <Button width="full" onClick={handleLogin}>
             Submit
