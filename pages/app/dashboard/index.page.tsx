@@ -1,6 +1,14 @@
+import { Box, Grid, GridItem, Icon, Stack } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
 import { NextPage } from 'next';
 import { useEffect } from 'react';
+import {
+  HiOutlineShoppingCart,
+  HiOutlineUserGroup,
+  HiOutlineUsers,
+  HiShoppingCart,
+} from 'react-icons/hi';
+import { Screen } from '../../../components/screen/screen';
 import { supabase } from '../../../utils/supabase';
 
 const DashboardPage: NextPage = () => {
@@ -15,10 +23,58 @@ const DashboardPage: NextPage = () => {
     console.log(use);
   };
   return (
-    <div className="center flex flex-col items-center justify-center border-slate-500 border-2">
-      <div>hi</div>
-      <div>d</div>
-    </div>
+    <Screen>
+      <Screen.Header></Screen.Header>
+      <Screen.Content>
+        <Grid gap="12px" templateColumns="repeat(2, 1fr)">
+          <GridItem>
+            <Box background="#F0FDFA" border="3px solid #131723" borderRadius="16px" padding="20px">
+              <Icon as={HiOutlineShoppingCart} />
+              <br />
+              Point of Sale
+            </Box>
+          </GridItem>
+
+          <GridItem>
+            <Box background="#FDF0F0" border="3px solid #131723" borderRadius="16px" padding="20px">
+              <Icon as={HiOutlineUsers} color="#A92938" />
+              <br />
+              Staff
+            </Box>
+          </GridItem>
+          <GridItem>
+            <Box background="#F0FDFA" border="3px solid #131723" borderRadius="16px" padding="20px">
+              <Icon as={HiOutlineShoppingCart} />
+              <br />
+              Point of Sale
+            </Box>
+          </GridItem>
+
+          <GridItem>
+            <Box background="#FDF0F0" border="3px solid #131723" borderRadius="16px" padding="20px">
+              <Icon as={HiOutlineUsers} color="#A92938" />
+              <br />
+              Staff
+            </Box>
+          </GridItem>
+          <GridItem>
+            <Box background="#F0FDFA" border="3px solid #131723" borderRadius="16px" padding="20px">
+              <Icon as={HiOutlineShoppingCart} />
+              <br />
+              Point of Sale
+            </Box>
+          </GridItem>
+
+          <GridItem>
+            <Box background="#FDF0F0" border="3px solid #131723" borderRadius="16px" padding="20px">
+              <Icon as={HiOutlineUsers} color="#A92938" />
+              <br />
+              Staff
+            </Box>
+          </GridItem>
+        </Grid>
+      </Screen.Content>
+    </Screen>
   );
 };
 
