@@ -5,6 +5,15 @@ const fonts = {
   body: `'Figtree', sans-serif`,
 };
 
+const colors = {
+  brand: {
+    primary: '#113DAC',
+    secondary: '',
+    darkGrey: '#545962',
+    black: '#0B0C0C',
+  },
+};
+
 const components = {
   Button: {
     baseStyle: {
@@ -14,7 +23,7 @@ const components = {
     },
     variants: {
       solid: {
-        background: '#493CE2',
+        background: 'brand.primary',
         color: 'white',
         minWidth: '120px',
       },
@@ -24,8 +33,8 @@ const components = {
     variants: {
       outline: {
         field: {
-          border: '3px solid',
-          borderColor: '#131723',
+          border: '2px solid',
+          borderColor: 'brand.black',
           borderRadius: '4px',
         },
       },
@@ -33,4 +42,4 @@ const components = {
   },
 };
 
-export const theme = extendTheme({ fonts, components });
+export const theme = extendTheme({ colors, fonts, components });

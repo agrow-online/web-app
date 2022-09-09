@@ -33,6 +33,9 @@ const SignInPage: NextPage = () => {
     } catch (error: any) {
       console.log({ error });
       let errorMessage = 'Something went wrong';
+      if (error.status === 422) {
+        errorMessage = 'The email seems invalid. Please try again.';
+      }
       if (error.status === 429) {
         errorMessage = 'You can only request a login link once every minute. Try again later.';
       }
@@ -52,11 +55,11 @@ const SignInPage: NextPage = () => {
       </Head>
 
       <Screen.Content>
-        <VStack gap={10} maxWidth={['full', null, 'md']} margin="auto">
+        <VStack maxWidth={['full', null, 'md']} margin="auto">
           <h2>Agropreneur</h2>
           <form>
-            <FormControl gap={10}>
-              <FormLabel>Email</FormLabel>
+            <FormControl my={10}>
+              <FormLabel color="brand.darkGrey">Email</FormLabel>
 
               <Input
                 type="email"
@@ -66,7 +69,7 @@ const SignInPage: NextPage = () => {
                 onChange={({ target: { value } }) => setEmail(value)}
                 required
               />
-              <FormHelperText>
+              <FormHelperText color="brand.darkGrey">
                 You'll receive a magic link in your mail inbox to login without a password.
               </FormHelperText>
             </FormControl>
