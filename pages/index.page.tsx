@@ -18,8 +18,10 @@ const Home: NextPage = () => {
 
       <VStack height="100vh" justifyContent="space-between">
         <Box as="nav" alignSelf="flex-end" padding={4}>
-          <Link href="/sign-in">
-            <Button>Sign in</Button>
+          <Link href="/sign-in" passHref>
+            <Button as="a" width="120px">
+              Sign in
+            </Button>
           </Link>
         </Box>
 

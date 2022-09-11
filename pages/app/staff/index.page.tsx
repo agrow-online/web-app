@@ -14,7 +14,6 @@ import {
   HiUsers,
 } from 'react-icons/hi';
 import { Screen } from '../../../components/screen/screen';
-import { Typography } from '../../../components/typography';
 import { CallToAction } from '../../../components/typography/typogaphy';
 import { supabase } from '../../../utils/supabase';
 
@@ -32,7 +31,7 @@ const DashboardPage: NextPage = () => {
   return (
     <Screen withNavigation>
       <Head>
-        <title>Dashboard | Agropreneur</title>
+        <title>Staff | Agropreneur</title>
       </Head>
 
       <Screen.Header></Screen.Header>
@@ -47,15 +46,11 @@ const DashboardPage: NextPage = () => {
               padding="20px"
             >
               <Icon as={HiOutlineUsers} color="#A92938" />
-              <Link href="/app/staff" passHref>
+              <Link href="/app/stssff" passHref>
                 <LinkOverlay>
-                  <Typography.CallToAction
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
+                  <CallToAction display="flex" justifyContent="space-between" alignItems="center">
                     <span>Staff</span> <Icon as={HiArrowSmRight} />
-                  </Typography.CallToAction>
+                  </CallToAction>
                 </LinkOverlay>
               </Link>
             </LinkBox>
