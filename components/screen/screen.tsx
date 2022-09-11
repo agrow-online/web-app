@@ -1,13 +1,15 @@
 import {
+  Avatar,
   Box,
   Flex,
+  Heading,
   HStack,
   IconButton,
   useBreakpointValue,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { HiMenu } from 'react-icons/hi';
+import { HiOutlineBell, HiMenu } from 'react-icons/hi';
 import { createContext, useContext } from 'react';
 import { ComponentWithChildren } from '../../types/base';
 import { ScreenComponent, ScreenProps, ScreenContextProps } from './types';
@@ -44,22 +46,26 @@ const Header: ComponentWithChildren = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box width="100%" padding={6} justifySelf="stretch">
+    <HStack width="100%" padding={6} height="70px" boxShadow=" 0px 2px 4px rgba(0, 0, 0, 0.1);">
       {withNavigation && isMobile && (
-        <HStack justify="flex-end">
+        <HStack w="full" justify="space-between" alignItems="center">
           <IconButton
-            aria-label="Open menu"
-            icon={<HiMenu size="32px" />}
-            variant="ghost"
+            aria-label="View notifications"
+            rounded="full"
+            icon={<HiOutlineBell size="24px" />}
+            variant="solid"
+            color="black"
+            backgroundColor=" #E2E8F9"
             onClick={onOpen}
-            size="lg"
-            marginRight="-12px"
           />
+
+          <Heading fontSize="22px">Hello, username</Heading>
+          <Avatar name="simona wine" width="40px" height="40px" padding={5} />
         </HStack>
       )}
 
       {children}
-    </Box>
+    </HStack>
   );
 };
 

@@ -51,11 +51,11 @@ const SignInPage: NextPage = () => {
   return (
     <Screen contentOnly>
       <Head>
-        <title>Sign in - Agropreneur</title>
+        <title>Sign in | Agropreneur</title>
       </Head>
 
       <Screen.Content>
-        <VStack maxWidth={['full', null, 'md']} margin="auto">
+        <VStack maxWidth={['full', null, 'xs']} margin="auto">
           <h2>Agropreneur</h2>
           <form>
             <FormControl my={10}>

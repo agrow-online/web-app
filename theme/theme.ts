@@ -25,7 +25,6 @@ const components = {
       solid: {
         background: 'brand.primary',
         color: 'white',
-        minWidth: '120px',
       },
     },
   },

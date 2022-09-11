@@ -39,6 +39,8 @@ export const seed = async () => {
       (subCategory) => subCategory.descriptiveName === rest.subCategory
     )!;
 
+    console.log(mappedProduct);
+
     const product = await client.product.upsert({
       where: { name: key },
       update: {},
