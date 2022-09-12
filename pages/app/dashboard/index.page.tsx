@@ -16,7 +16,7 @@ import {
 import { Screen } from '../../../components/screen/screen';
 import { Typography } from '../../../components/typography';
 import { CallToAction } from '../../../components/typography/typogaphy';
-import { supabase } from '../../../utils/supabase';
+import { supabase } from '../../../module/api/client';
 
 const DashboardPage: NextPage = () => {
   const { user } = useUser();
