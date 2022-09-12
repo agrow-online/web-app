@@ -30,9 +30,8 @@ model Business {
   location String
   isActive Boolean
 
-  employees   User[] @relation(name: "Employees")
-  owner       User   @relation(name: "Owner", fields: [ownerUserId], references: [id])
-  ownerUserId String @unique @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @db.Uuid
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -46,11 +45,9 @@ model User {
   email String @unique
   name  String @default("")
 
-  role            Role      @default(EMPLOYEE)
-  ownedBusiness   Business? @relation(name: "Owner")
-  ownedBusinessId String?   @unique @db.Uuid
-  business        Business  @relation(name: "Employees", fields: [businessId], references: [id])
-  businessId      String    @db.Uuid
+  role       Role      @default(EMPLOYEE)
+  business   Business?
+  businessId String?   @unique @db.Uuid
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
