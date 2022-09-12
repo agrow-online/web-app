@@ -15,7 +15,7 @@ import {
 } from 'react-icons/hi';
 import { Screen } from '../../../components/screen/screen';
 import { CallToAction } from '../../../components/typography/typogaphy';
-import { supabase } from '../../../utils/supabase';
+import { supabase } from '../../../module/api/client';
 
 const DashboardPage: NextPage = () => {
   const { user } = useUser();
@@ -46,7 +46,7 @@ const DashboardPage: NextPage = () => {
               padding="20px"
             >
               <Icon as={HiOutlineUsers} color="#A92938" />
-              <Link href="/app/stssff" passHref>
+              <Link href="/app" passHref>
                 <LinkOverlay>
                   <CallToAction display="flex" justifyContent="space-between" alignItems="center">
                     <span>Staff</span> <Icon as={HiArrowSmRight} />

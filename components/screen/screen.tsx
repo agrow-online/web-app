@@ -42,12 +42,12 @@ export const Screen: ScreenComponent<ScreenProps> = ({
 };
 
 const Header: ComponentWithChildren = ({ children }) => {
-  const { withNavigation, isMobile } = useContext(ScreenContext);
+  const { withNavigation } = useContext(ScreenContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <HStack width="100%" padding={6} height="70px" boxShadow=" 0px 2px 4px rgba(0, 0, 0, 0.1);">
-      {withNavigation && isMobile && (
+      {withNavigation && (
         <HStack w="full" justify="space-between" alignItems="center">
           <IconButton
             aria-label="View notifications"
@@ -70,29 +70,20 @@ const Header: ComponentWithChildren = ({ children }) => {
 };
 
 const Content: ComponentWithChildren = ({ children }) => {
-  const { isMobile, contentOnly } = useContext(ScreenContext);
-
   return (
-    <Box
-      borderTopRadius={15}
-      borderBottomRadius={isMobile ? [0, null, 15] : 15}
-      padding={6}
-      width="full"
-    >
+    <Box borderTopRadius={15} borderBottomRadius={[0, null, 15]} padding={6} width="full">
       {children}
     </Box>
   );
 };
 
 const Footer: ComponentWithChildren = ({ children }) => {
-  const { isFooterPadded, isMobile } = useContext(ScreenContext);
-
   return (
     <Box
-      padding={isMobile || isFooterPadded ? 6 : 0}
+      padding={6}
       width="full"
       justifyContent="flex-end"
-      background={isMobile ? 'white' : 'transparent'}
+      background={'white'}
       marginTop="0 !important"
     >
       {children}
