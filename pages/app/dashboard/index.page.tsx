@@ -1,34 +1,16 @@
 import { Box, Grid, GridItem, Icon, LinkBox, LinkOverlay, Stack } from '@chakra-ui/react';
-import { useUser } from '@supabase/auth-helpers-react';
+
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import {
-  HiArrowRight,
-  HiArrowSmRight,
-  HiOutlineShoppingCart,
-  HiOutlineUserGroup,
-  HiOutlineUsers,
-  HiShoppingCart,
-  HiUsers,
-} from 'react-icons/hi';
+
+import { HiArrowSmRight, HiOutlineUsers } from 'react-icons/hi';
 import { Screen } from '../../../components/screen/screen';
 import { Typography } from '../../../components/typography';
-import { CallToAction } from '../../../components/typography/typogaphy';
-import { supabase } from '../../../module/api/client';
+
+import { useProfileQuery } from '../../../module/api/queries/use-profile';
 
 const DashboardPage: NextPage = () => {
-  const { user } = useUser();
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const fetchUser = async () => {
-    const use = await supabase.from('users').select('*').eq('authId', user?.aud);
-    console.log(use);
-  };
   return (
     <Screen withNavigation>
       <Head>

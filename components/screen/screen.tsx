@@ -13,6 +13,8 @@ import { HiOutlineBell, HiMenu } from 'react-icons/hi';
 import { createContext, useContext } from 'react';
 import { ComponentWithChildren } from '../../types/base';
 import { ScreenComponent, ScreenProps, ScreenContextProps } from './types';
+import { useProfileQuery } from '../../module/api/queries/use-profile';
+import { Typography } from '../typography';
 
 const ScreenContext = createContext<ScreenProps & ScreenContextProps>({
   isMobile: false,
@@ -42,6 +44,8 @@ export const Screen: ScreenComponent<ScreenProps> = ({
 };
 
 const Header: ComponentWithChildren = ({ children }) => {
+  const { data, isError } = useProfileQuery();
+
   const { withNavigation } = useContext(ScreenContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -57,10 +61,11 @@ const Header: ComponentWithChildren = ({ children }) => {
             color="black"
             backgroundColor=" #E2E8F9"
             onClick={onOpen}
+            flexShrink={1}
           />
 
-          <Heading fontSize="22px">Hello, username</Heading>
-          <Avatar name="simona wine" width="40px" height="40px" padding={5} />
+          <Typography.Title>Hello, {data?.firstName}</Typography.Title>
+          <Avatar name="simona wine" width="40px" height="40px" padding={5} flexShrink={1} />
         </HStack>
       )}
 
