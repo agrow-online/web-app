@@ -16,18 +16,11 @@ import {
 import { Screen } from '../../../components/screen/screen';
 import { CallToAction } from '../../../components/typography/typogaphy';
 import { supabase } from '../../../module/api/client';
+import { useBusinessQuery } from '../../../module/api/queries/use-profile';
 
 const DashboardPage: NextPage = () => {
-  const { user } = useUser();
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const fetchUser = async () => {
-    const use = await supabase.from('users').select('*').eq('authId', user?.aud);
-    console.log(use);
-  };
+  const { data } = useBusinessQuery();
+  console.log(data);
   return (
     <Screen withNavigation>
       <Head>
