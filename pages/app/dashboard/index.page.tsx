@@ -1,4 +1,18 @@
-import { Box, Grid, GridItem, Icon, LinkBox, LinkOverlay, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  Grid,
+  GridItem,
+  Icon,
+  LinkBox,
+  LinkOverlay,
+  Stack,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 import { NextPage } from 'next';
 import Head from 'next/head';
@@ -10,14 +24,14 @@ import { Typography } from '../../../components/typography';
 
 const DashboardPage: NextPage = () => {
   return (
-    <Screen withNavigation>
+    <Screen>
       <Head>
         <title>Dashboard | Agropreneur</title>
       </Head>
 
       <Screen.Header></Screen.Header>
       <Screen.Content>
-        <Grid gap="12px" templateColumns="repeat(2, 1fr)">
+        <Grid gap="12px" templateColumns="repeat(2, 1fr)" w="full">
           <GridItem>
             <LinkBox
               as={Box}
