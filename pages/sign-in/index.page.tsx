@@ -49,7 +49,7 @@ const SignInPage: NextPage = () => {
   };
 
   return (
-    <Screen contentOnly>
+    <Screen headerIsHidden contentIsCentered>
       <Head>
         <title>Sign in | Agropreneur</title>
       </Head>

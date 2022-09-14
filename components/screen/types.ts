@@ -8,8 +8,9 @@ export type ScreenComponent<T> = ComponentWithChildren<T> & {
 };
 
 export type ScreenProps = {
-  withNavigation?: boolean;
-  notPadded?: boolean;
+  headerIsHidden?: boolean;
+  contentIsNotPadded?: boolean;
+  contentIsCentered?: boolean;
 };
 
 export type ScreenContextProps = {

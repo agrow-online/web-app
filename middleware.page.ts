@@ -24,6 +24,7 @@ export async function middleware(request: NextRequest) {
     });
     const { user } = await response.json();
     sbUser = user;
+    console.log(user);
   } catch (error) {
     console.error({ error });
     // Error fetching user data

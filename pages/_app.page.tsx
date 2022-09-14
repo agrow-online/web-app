@@ -5,12 +5,22 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ChakraProvider } from '@chakra-ui/react';
 import { theme } from '../theme/theme';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-// Create a client
-const queryClient = new QueryClient();
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const router = useRouter();
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+      onError: (error) => {
+        console.log({ error });
+        if ((error as any).message === 'JWT expired') {
+          router.push('/sign-in');
+        }
+      },
+    }),
+  });
+
   return (
     <QueryClientProvider client={queryClient}>
       <UserProvider supabaseClient={supabaseClient}>

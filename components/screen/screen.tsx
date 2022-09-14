@@ -18,22 +18,26 @@ import { Typography } from '../typography';
 
 const ScreenContext = createContext<ScreenProps & ScreenContextProps>({
   isMobile: false,
-  withNavigation: true,
-  notPadded: false,
+  headerIsHidden: false,
+  contentIsNotPadded: false,
+  contentIsCentered: false,
 });
 
 export const Screen: ScreenComponent<ScreenProps> = ({
-  withNavigation = true,
-  notPadded = false,
+  headerIsHidden = false,
+  contentIsNotPadded = false,
+  contentIsCentered = false,
   children,
 }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <ScreenContext.Provider value={{ isMobile, withNavigation, notPadded }}>
-      <VStack justifyContent="stretch" height="100vh" padding={[0, null, 8]}>
+    <ScreenContext.Provider
+      value={{ isMobile, headerIsHidden, contentIsNotPadded, contentIsCentered }}
+    >
+      <Flex justifyContent="stretch" height="100vh">
         {children}
-      </VStack>
+      </Flex>
     </ScreenContext.Provider>
   );
 };
@@ -42,8 +46,7 @@ export const Screen: ScreenComponent<ScreenProps> = ({
 const Header: ComponentWithChildren = ({ children }) => {
   const { data, error } = useProfileQuery();
 
-  const { withNavigation } = useContext(ScreenContext);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { headerIsHidden } = useContext(ScreenContext);
 
   if (error) {
     return null;
@@ -53,43 +56,45 @@ const Header: ComponentWithChildren = ({ children }) => {
     return null;
   }
 
-  return (
-    <HStack width="100%" padding={6} height="70px" boxShadow=" 0px 2px 4px rgba(0, 0, 0, 0.1);">
-      {withNavigation && (
-        <HStack w="full" justify="space-between" alignItems="center">
-          <IconButton
-            aria-label="View notifications"
-            rounded="full"
-            icon={<HiOutlineBell size="24px" />}
-            variant="solid"
-            color="black"
-            backgroundColor=" #E2E8F9"
-            onClick={onOpen}
-            flexShrink={1}
-          />
+  console.log({ headerIsHidden });
 
-          <Typography.Title>Hello, {data.firstName}</Typography.Title>
-          <Avatar name="simona wine" width="40px" height="40px" padding={5} flexShrink={1} />
+  return (
+    <Flex
+      position="fixed"
+      top={0}
+      width="100%"
+      padding={6}
+      height="70px"
+      boxShadow=" 0px 2px 4px rgba(0, 0, 0, 0.1);"
+      background="white"
+    >
+      {!headerIsHidden && (
+        <HStack w="full" justify="space-between" alignItems="center">
+          <Typography.Title textAlign="center" flex="1">
+            Hello, {data.firstName}
+          </Typography.Title>
+          <Avatar name="simona wine" width="40px" height="40px" padding={5} />
         </HStack>
       )}
 
       {children}
-    </HStack>
+    </Flex>
   );
 };
 
 const Content: ComponentWithChildren = ({ children }) => {
-  const { notPadded } = useContext(ScreenContext);
+  const { contentIsNotPadded, contentIsCentered, headerIsHidden } = useContext(ScreenContext);
 
   return (
-    <Box
-      borderTopRadius={15}
-      borderBottomRadius={[0, null, 15]}
-      padding={notPadded ? 0 : 6}
+    <Flex
+      justify={contentIsCentered ? 'center' : 'flex-start'}
       width="full"
+      height="100%"
+      marginTop={headerIsHidden ? 0 : '70px'}
+      padding={contentIsNotPadded ? 0 : '24px'}
     >
       {children}
-    </Box>
+    </Flex>
   );
 };
 
