@@ -9,9 +9,7 @@ export type ScreenComponent<T> = ComponentWithChildren<T> & {
 
 export type ScreenProps = {
   withNavigation?: boolean;
-  contentOnly?: boolean;
-  isContentFullScreen?: boolean;
-  isFooterPadded?: boolean;
+  notPadded?: boolean;
 };
 
 export type ScreenContextProps = {

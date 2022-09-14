@@ -8,8 +8,6 @@ import { HiArrowSmRight, HiOutlineUsers } from 'react-icons/hi';
 import { Screen } from '../../../components/screen/screen';
 import { Typography } from '../../../components/typography';
 
-import { useProfileQuery } from '../../../module/api/queries/use-profile';
-
 const DashboardPage: NextPage = () => {
   return (
     <Screen withNavigation>
