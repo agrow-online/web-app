@@ -47,6 +47,7 @@ model User {
   email     String @unique
   firstName String @default("")
   lastName  String @default("")
+  avatarUrl String @default("")
 
   role                Role
   business            Business? @relation(name: "Owner")

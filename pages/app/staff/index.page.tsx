@@ -1,4 +1,14 @@
-import { Box, Grid, GridItem, Icon, LinkBox, LinkOverlay, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Icon,
+  LinkBox,
+  LinkOverlay,
+  Stack,
+  VStack,
+} from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
@@ -14,41 +24,54 @@ import {
   HiUsers,
 } from 'react-icons/hi';
 import { Screen } from '../../../components/screen/screen';
+import { Typography } from '../../../components/typography';
 import { CallToAction } from '../../../components/typography/typogaphy';
 import { supabase } from '../../../module/api/client';
 import { useBusinessQuery } from '../../../module/api/queries/use-profile';
 
 const DashboardPage: NextPage = () => {
-  const { data } = useBusinessQuery();
-  console.log(data);
+  const { data, error, isLoading } = useBusinessQuery();
+
+  if (error) {
+    return null;
+  }
+
+  if (!data) {
+    return null;
+  }
+  // TODO: map roles
+
   return (
-    <Screen withNavigation>
+    <Screen notPadded>
       <Head>
         <title>Staff | Agropreneur</title>
       </Head>
 
-      <Screen.Header></Screen.Header>
+      <Screen.Header />
       <Screen.Content>
-        <Grid gap="12px" templateColumns="repeat(2, 1fr)">
-          <GridItem>
-            <LinkBox
-              as={Box}
-              background="#FDF0F0"
-              border="3px solid #131723"
-              borderRadius="16px"
-              padding="20px"
+        <Flex direction="column" gap={'8px'}>
+          {data.employees.map((employee) => (
+            <Flex
+              direction="row"
+              justifyContent="space-between"
+              key={employee.id}
+              boxShadow=" 0px 8px 48px #EBEBEB, 0px 4px 8px rgba(89, 89, 89, 0.08), 0px 0px 1px rgba(89, 89, 89, 0.48);"
+              margin="0 !important"
+              padding="24px"
             >
-              <Icon as={HiOutlineUsers} color="#A92938" />
-              <Link href="/app" passHref>
-                <LinkOverlay>
-                  <CallToAction display="flex" justifyContent="space-between" alignItems="center">
-                    <span>Staff</span> <Icon as={HiArrowSmRight} />
-                  </CallToAction>
-                </LinkOverlay>
-              </Link>
-            </LinkBox>
-          </GridItem>
-        </Grid>
+              <Box>
+                <Typography.CallToAction>
+                  {employee.firstName} {employee.lastName}
+                </Typography.CallToAction>
+
+                <Typography.Body small color="brand.darkGrey">
+                  {employee.role}
+                </Typography.Body>
+              </Box>
+              <Icon as={HiArrowSmRight} />
+            </Flex>
+          ))}
+        </Flex>
       </Screen.Content>
     </Screen>
   );
