@@ -1,21 +1,30 @@
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   Heading,
   HStack,
+  Icon,
   IconButton,
+  Link,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Portal,
   useBreakpointValue,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { HiOutlineBell, HiMenu } from 'react-icons/hi';
-import { createContext, useContext } from 'react';
+import { HiOutlineBell, HiMenu, HiLogout, HiPhotograph } from 'react-icons/hi';
+import { Children, createContext, useContext } from 'react';
 import { ComponentWithChildren } from '../../types/base';
 import { ScreenComponent, ScreenProps, ScreenContextProps } from './types';
 import { useProfileQuery } from '../../module/api/queries/use-profile';
 import { Typography } from '../typography';
-
+import { ChevronDownIcon } from '@chakra-ui/icons';
 const ScreenContext = createContext<ScreenProps & ScreenContextProps>({
   isMobile: false,
   headerIsHidden: false,
@@ -58,6 +67,8 @@ const Header: ComponentWithChildren = ({ children }) => {
 
   console.log({ headerIsHidden });
 
+  const childExists = Children.count(children) > 0;
+
   return (
     <Flex
       position="fixed"
@@ -67,17 +78,39 @@ const Header: ComponentWithChildren = ({ children }) => {
       height="70px"
       boxShadow=" 0px 2px 4px rgba(0, 0, 0, 0.1);"
       background="white"
+      justify="center"
     >
       {!headerIsHidden && (
-        <HStack w="full" justify="space-between" alignItems="center">
-          <Typography.Title textAlign="center" flex="1">
-            Hello, {data.firstName}
-          </Typography.Title>
-          <Avatar name="simona wine" width="40px" height="40px" padding={5} />
-        </HStack>
-      )}
+        <>
+          {childExists ? (
+            children
+          ) : (
+            <HStack w="full" justify="space-between" alignItems="center">
+              <Typography.Title textAlign="center" flex="1">
+                Hello, {data.firstName}
+              </Typography.Title>
 
-      {children}
+              <Menu>
+                <MenuButton as={Link}>
+                  <Avatar
+                    name={`${data.firstName} ${data.lastName}`}
+                    width="40px"
+                    height="40px"
+                    padding={5}
+                  />
+                </MenuButton>
+                <Portal>
+                  <MenuList>
+                    <MenuItem icon={<Icon as={HiPhotograph} />}>Change your picture</MenuItem>
+                    <MenuDivider />
+                    <MenuItem icon={<Icon as={HiLogout} />}>Logout</MenuItem>
+                  </MenuList>
+                </Portal>
+              </Menu>
+            </HStack>
+          )}
+        </>
+      )}
     </Flex>
   );
 };

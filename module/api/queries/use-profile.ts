@@ -1,5 +1,6 @@
 import { useUser } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
+import { Business, User } from '../../../types/user';
 import { supabase } from '../client';
 
 const getUser = async (userId?: string | null) => {
@@ -12,9 +13,9 @@ const getUser = async (userId?: string | null) => {
   return data[0] ?? null;
 };
 
-const getBusiness = async (userId?: string | null) => {
+const getBusiness = async (userId: string) => {
   const { data: business, error: businessError } = await supabase
-    .from('businesses')
+    .from<Business>('businesses')
     .select('*')
     .eq('userId', userId);
 
@@ -23,7 +24,7 @@ const getBusiness = async (userId?: string | null) => {
   }
 
   const { data: employees, error: employeesError } = await supabase
-    .from('users')
+    .from<User>('users')
     .select('*')
     .eq('belongsToBusinessId', business[0].id);
 
@@ -42,10 +43,6 @@ export const useProfileQuery = () => {
   });
 };
 
-export const useBusinessQuery = () => {
-  const { user } = useUser();
-
-  return useQuery(['business'], () => getBusiness(user?.id), {
-    enabled: !!user?.id,
-  });
+export const useBusinessQuery = (userId: string) => {
+  return useQuery(['business'], () => getBusiness(userId));
 };

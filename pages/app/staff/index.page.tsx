@@ -17,7 +17,8 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { useUser } from '@supabase/auth-helpers-react';
+import { getUser, withPageAuth } from '@supabase/auth-helpers-nextjs';
+
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -37,8 +38,8 @@ import { CallToAction } from '../../../components/typography/typogaphy';
 import { supabase } from '../../../module/api/client';
 import { useBusinessQuery } from '../../../module/api/queries/use-profile';
 
-const DashboardPage: NextPage = () => {
-  const { data, error, isLoading } = useBusinessQuery();
+const StaffPage: NextPage = ({ user }) => {
+  const { data, error, isLoading } = useBusinessQuery<{ hi: str }>(user);
   const [selectedEmployee, setSelectedEmployee] = useState<{
     id: string;
     firstName: string;
@@ -61,7 +62,9 @@ const DashboardPage: NextPage = () => {
         <title>Staff | Agropreneur</title>
       </Head>
 
-      <Screen.Header />
+      <Screen.Header>
+        <Typography.Title>Staff</Typography.Title>
+      </Screen.Header>
       <Screen.Content>
         <Flex direction="column" gap={'8px'} w="full">
           {data.employees.map((employee) => (
@@ -105,7 +108,7 @@ const EditEmployee = ({
   onClose: () => void;
 }) => {
   return (
-    <Drawer placement="bottom" onClose={onClose} isOpen={true}>
+    <Drawer placement="bottom" onClose={onClose} isOpen={true} preserveScrollBarGap>
       <DrawerOverlay />
       <DrawerContent borderRadius="16px 16px 0px 0px">
         <DrawerHeader>
@@ -113,6 +116,9 @@ const EditEmployee = ({
         </DrawerHeader>
         <DrawerBody>
           {employee.firstName} {employee.lastName} {employee.role}
+          <Typography.Body color="#B8322A" fontWeight="600" textAlign="center">
+            Remove from staff
+          </Typography.Body>
         </DrawerBody>
         <DrawerFooter>
           <Button w="full">Save</Button>
@@ -122,4 +128,13 @@ const EditEmployee = ({
   );
 };
 
-export default DashboardPage;
+export default StaffPage;
+
+export const getServerSideProps = withPageAuth({
+  redirectTo: '/sign-in',
+  async getServerSideProps(ctx) {
+    // Access the user object
+    const { user } = await getUser(ctx);
+    return { props: { user } };
+  },
+});
