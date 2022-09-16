@@ -41,50 +41,50 @@ export const seed = async () => {
 
     console.log(subCategory);
 
-    // const product = await client.product.upsert({
-    //   where: { name: key },
-    //   update: {},
-    //   create: {
-    //     ...rest,
-    //     name: key,
-    //     brand: {
-    //       connectOrCreate: {
-    //         where: { name: rest.brand },
-    //         create: {
-    //           name: rest.brand,
-    //         },
-    //       },
-    //     },
-    //     category: {
-    //       connect: {
-    //         id: subCategory.category.id,
-    //       },
-    //     },
-    //     subCategory: {
-    //       connect: {
-    //         descriptiveName: subCategory.descriptiveName,
-    //       },
-    //     },
-    //   },
-    // });
+    const product = await client.product.upsert({
+      where: { name: key },
+      update: {},
+      create: {
+        ...rest,
+        name: key,
+        brand: {
+          connectOrCreate: {
+            where: { name: rest.brand },
+            create: {
+              name: rest.brand,
+            },
+          },
+        },
+        category: {
+          connect: {
+            id: subCategory.category.id,
+          },
+        },
+        subCategory: {
+          connect: {
+            descriptiveName: subCategory.descriptiveName,
+          },
+        },
+      },
+    });
 
-    // if (variants.length) {
-    //   for (const variant of variants) {
-    //     await client.productVariant.create({
-    //       data: {
-    //         ...variant,
-    //         product: { connect: { id: product.id } },
-    //       },
-    //     });
-    //   }
-    // } else {
-    //   await client.productVariant.create({
-    //     data: {
-    //       name: 'no-variant',
-    //       product: { connect: { id: product.id } },
-    //     },
-    //   });
-    // }
+    if (variants.length) {
+      for (const variant of variants) {
+        await client.productVariant.create({
+          data: {
+            ...variant,
+            product: { connect: { id: product.id } },
+          },
+        });
+      }
+    } else {
+      await client.productVariant.create({
+        data: {
+          name: 'no-variant',
+          product: { connect: { id: product.id } },
+        },
+      });
+    }
   }
 };
 

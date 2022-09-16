@@ -1,3 +1,4 @@
+import { ChevronLeftIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -10,18 +11,22 @@ import {
   Flex,
   Grid,
   GridItem,
+  HStack,
   Icon,
+  IconButton,
   LinkBox,
   LinkOverlay,
   Stack,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { getUser, withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { Role } from '@prisma/client';
+import { getUser, supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 
-import { NextPage } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
   HiArrowRight,
@@ -37,14 +42,16 @@ import { Typography } from '../../../components/typography';
 import { CallToAction } from '../../../components/typography/typogaphy';
 import { supabase } from '../../../module/api/client';
 import { useBusinessQuery } from '../../../module/api/queries/use-profile';
+import { roleTextMap } from '../../../types/user';
 
-const StaffPage: NextPage = ({ user }) => {
-  const { data, error, isLoading } = useBusinessQuery<{ hi: str }>(user);
+const StaffPage: NextPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const router = useRouter();
+  const { data, error, isLoading } = useBusinessQuery(user.id);
   const [selectedEmployee, setSelectedEmployee] = useState<{
     id: string;
     firstName: string;
     lastName: string;
-    role: any;
+    role: Role;
   } | null>(null);
 
   if (error) {
@@ -63,7 +70,19 @@ const StaffPage: NextPage = ({ user }) => {
       </Head>
 
       <Screen.Header>
-        <Typography.Title>Staff</Typography.Title>
+        <HStack w="full" justify="space-between" alignItems="center">
+          <IconButton
+            aria-label="Return to previous page"
+            icon={<ChevronLeftIcon w={6} h={6} />}
+            rounded="full"
+            color="black"
+            background="#E2E8F9"
+            onClick={() => router.back()}
+          ></IconButton>
+          <Typography.Title flex="1" textAlign="center">
+            Staff
+          </Typography.Title>
+        </HStack>
       </Screen.Header>
       <Screen.Content>
         <Flex direction="column" gap={'8px'} w="full">
@@ -84,7 +103,7 @@ const StaffPage: NextPage = ({ user }) => {
                 </Typography.CallToAction>
 
                 <Typography.Body small color="brand.darkGrey">
-                  {employee.role}
+                  {roleTextMap[employee.role]}
                 </Typography.Body>
               </Box>
               <Icon as={HiArrowSmRight} />
@@ -104,7 +123,7 @@ const EditEmployee = ({
   employee,
   onClose,
 }: {
-  employee: { id: string; firstName: string; lastName: string; role: any };
+  employee: { id: string; firstName: string; lastName: string; role: Role };
   onClose: () => void;
 }) => {
   return (
@@ -112,10 +131,15 @@ const EditEmployee = ({
       <DrawerOverlay />
       <DrawerContent borderRadius="16px 16px 0px 0px">
         <DrawerHeader>
-          <Typography.Title>Edit {employee.firstName}'s details </Typography.Title>
+          <Typography.Title>
+            {employee.firstName} {employee.lastName}
+          </Typography.Title>
         </DrawerHeader>
         <DrawerBody>
-          {employee.firstName} {employee.lastName} {employee.role}
+          <Typography.Body small color="brand.darkGrey">
+            Role
+          </Typography.Body>
+          {roleTextMap[employee.role]}
           <Typography.Body color="#B8322A" fontWeight="600" textAlign="center">
             Remove from staff
           </Typography.Body>
@@ -130,11 +154,13 @@ const EditEmployee = ({
 
 export default StaffPage;
 
-export const getServerSideProps = withPageAuth({
+export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: '/sign-in',
   async getServerSideProps(ctx) {
     // Access the user object
     const { user } = await getUser(ctx);
-    return { props: { user } };
+    const { data } = await supabaseServerClient(ctx).from('users').select('*').eq('id', user.id);
+
+    return { props: { user, profile: data?.[0] } };
   },
 });

@@ -50,24 +50,13 @@ export const Screen: ScreenComponent<ScreenProps> = ({
     </ScreenContext.Provider>
   );
 };
-
-// TODO: error and loading states
+// TODO: z-indices
 const Header: ComponentWithChildren = ({ children }) => {
-  const { data, error } = useProfileQuery();
-
   const { headerIsHidden } = useContext(ScreenContext);
 
-  if (error) {
+  if (headerIsHidden) {
     return null;
   }
-
-  if (!data) {
-    return null;
-  }
-
-  console.log({ headerIsHidden });
-
-  const childExists = Children.count(children) > 0;
 
   return (
     <Flex
@@ -79,38 +68,9 @@ const Header: ComponentWithChildren = ({ children }) => {
       boxShadow=" 0px 2px 4px rgba(0, 0, 0, 0.1);"
       background="white"
       justify="center"
+      zIndex="99"
     >
-      {!headerIsHidden && (
-        <>
-          {childExists ? (
-            children
-          ) : (
-            <HStack w="full" justify="space-between" alignItems="center">
-              <Typography.Title textAlign="center" flex="1">
-                Hello, {data.firstName}
-              </Typography.Title>
-
-              <Menu>
-                <MenuButton as={Link}>
-                  <Avatar
-                    name={`${data.firstName} ${data.lastName}`}
-                    width="40px"
-                    height="40px"
-                    padding={5}
-                  />
-                </MenuButton>
-                <Portal>
-                  <MenuList>
-                    <MenuItem icon={<Icon as={HiPhotograph} />}>Change your picture</MenuItem>
-                    <MenuDivider />
-                    <MenuItem icon={<Icon as={HiLogout} />}>Logout</MenuItem>
-                  </MenuList>
-                </Portal>
-              </Menu>
-            </HStack>
-          )}
-        </>
-      )}
+      {children}
     </Flex>
   );
 };
