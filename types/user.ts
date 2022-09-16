@@ -14,6 +14,11 @@ export type Business = {
 };
 
 enum Role {
-  ADMIN,
-  EMPLOYEE,
+  ADMIN = 'ADMIN',
+  EMPLOYEE = 'EMPLOYEE',
 }
+
+export const roleTextMap: { [key in Role]: string } = {
+  ADMIN: 'Admin',
+  EMPLOYEE: 'Staff attendant',
+};
