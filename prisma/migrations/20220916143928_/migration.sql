@@ -5,27 +5,28 @@ CREATE TYPE "Role" AS ENUM ('ADMIN', 'EMPLOYEE');
 CREATE TYPE "Unit" AS ENUM ('ML', 'L', 'G', 'KG', 'ITEM');
 
 -- CreateTable
-CREATE TABLE "shops" (
+CREATE TABLE "businesses" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
     "location" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL,
-    "ownerUserId" UUID NOT NULL,
+    "userId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "shops_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "businesses_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "users" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "authId" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "name" TEXT NOT NULL DEFAULT '',
-    "role" "Role" NOT NULL DEFAULT 'EMPLOYEE',
-    "ownedBusinessId" UUID,
-    "businessId" UUID NOT NULL,
+    "firstName" TEXT NOT NULL DEFAULT '',
+    "lastName" TEXT NOT NULL DEFAULT '',
+    "avatarUrl" TEXT NOT NULL DEFAULT '',
+    "role" "Role" NOT NULL,
+    "businessId" UUID,
+    "belongsToBusinessId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -96,16 +97,10 @@ CREATE TABLE "product_sub_categories" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "shops_ownerUserId_key" ON "shops"("ownerUserId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "users_authId_key" ON "users"("authId");
+CREATE UNIQUE INDEX "businesses_userId_key" ON "businesses"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "users_ownedBusinessId_key" ON "users"("ownedBusinessId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "products_name_key" ON "products"("name");
@@ -120,10 +115,10 @@ CREATE UNIQUE INDEX "product_categories_name_key" ON "product_categories"("name"
 CREATE UNIQUE INDEX "product_sub_categories_descriptiveName_key" ON "product_sub_categories"("descriptiveName");
 
 -- AddForeignKey
-ALTER TABLE "shops" ADD CONSTRAINT "shops_ownerUserId_fkey" FOREIGN KEY ("ownerUserId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "businesses" ADD CONSTRAINT "businesses_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "users" ADD CONSTRAINT "users_businessId_fkey" FOREIGN KEY ("businessId") REFERENCES "shops"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "users" ADD CONSTRAINT "users_belongsToBusinessId_fkey" FOREIGN KEY ("belongsToBusinessId") REFERENCES "businesses"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "products" ADD CONSTRAINT "products_brandId_fkey" FOREIGN KEY ("brandId") REFERENCES "product_brands"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
