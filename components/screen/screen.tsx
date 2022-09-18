@@ -59,19 +59,20 @@ const Header: ComponentWithChildren = ({ children }) => {
   }
 
   return (
-    <Flex
-      position="fixed"
-      top={0}
-      width="100%"
-      padding={6}
-      height="70px"
-      boxShadow=" 0px 2px 4px rgba(0, 0, 0, 0.1);"
-      background="white"
-      justify="center"
-      zIndex="99"
-    >
-      {children}
-    </Flex>
+    <Portal>
+      <Flex
+        position="fixed"
+        top={0}
+        width="100%"
+        padding={6}
+        height="70px"
+        boxShadow=" 0px 2px 4px rgba(0, 0, 0, 0.1);"
+        background="white"
+        justify="center"
+      >
+        {children}
+      </Flex>
+    </Portal>
   );
 };
 

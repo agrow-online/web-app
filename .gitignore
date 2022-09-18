@@ -40,7 +40,7 @@ next-env.d.ts
 sentry.properties
 
 # IDE
-.history
+.history 
 .vscode
 .idea
 
