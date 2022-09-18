@@ -15,6 +15,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
+import { Typography } from '../../components/typography';
 
 // TODO cleanup
 const SignInPage: NextPage = () => {
@@ -56,7 +57,7 @@ const SignInPage: NextPage = () => {
 
       <Screen.Content>
         <VStack maxWidth={['full', null, 'xs']} margin="auto">
-          <h2>Agropreneur</h2>
+          <Typography.Title>Sign in</Typography.Title>
           <form>
             <FormControl my={10}>
               <FormLabel color="brand.darkGrey">Email</FormLabel>
@@ -70,7 +71,7 @@ const SignInPage: NextPage = () => {
                 required
               />
               <FormHelperText color="brand.darkGrey">
-                You'll receive a magic link in your mail inbox to login without a password.
+                You&apos;ll receive a magic link in your mail inbox to login without a password.
               </FormHelperText>
             </FormControl>
             <Button type="submit" width="full" onClick={handleLogin}>
@@ -94,7 +95,7 @@ export const getServerSideProps = withPageAuth({
       return {
         redirect: {
           permanent: false,
-          destination: '/app/dashboard',
+          destination: '/app/hub',
         },
       };
     }
