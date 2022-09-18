@@ -60,7 +60,13 @@ const App = ({ Component, pageProps }: AppProps) => {
       <QueryClientProvider client={queryClient}>
         <UserProvider supabaseClient={supabaseClient}>
           <Head>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta name="robots" content="noindex" />
+            <meta name="application-name" content="Agropreneur" />
+            <meta name="description" content="Best PWA App in the world" />
+            <meta name="theme-color" content="#000000" />{' '}
+            <link rel="manifest" href="/manifest.json" />
+            <link rel="shortcut icon" href="/favicon.ico" />
           </Head>
           <ChakraProvider theme={theme}>
             <Component {...pageProps} />

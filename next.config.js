@@ -3,6 +3,9 @@ const { withSentryConfig } = require('@sentry/nextjs');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.BUNDLE_SIZE_ANALYZE === 'true',
 });
+const withPWA = require('next-pwa')({
+  dest: 'public',
+});
 
 const nextConfig = {
   reactStrictMode: true,
@@ -26,4 +29,6 @@ const sentryWebpackPluginOptions = {
 
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
-module.exports = withBundleAnalyzer(withSentryConfig(nextConfig, sentryWebpackPluginOptions));
+module.exports = withPWA(
+  withBundleAnalyzer(withSentryConfig(nextConfig, sentryWebpackPluginOptions))
+);
