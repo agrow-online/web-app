@@ -18,6 +18,7 @@ enum Role {
 enum Unit {
   ML
   L
+  MG
   G
   KG
   ITEM

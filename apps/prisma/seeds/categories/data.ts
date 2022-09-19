@@ -164,6 +164,10 @@ export const categories: Array<
       },
     ],
   },
+  {
+    name: 'Miscellaneous',
+    subCategories: [{ technicalName: 'Miscellaneous', descriptiveName: 'Miscellaneous' }],
+  },
 
   {
     name: 'Household products',

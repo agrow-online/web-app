@@ -1,0 +1,18 @@
+{
+  "name": "@agropreneur/prisma",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prisma:migrate:development": "dotenv -e .env.development.local -- prisma migrate dev",
+    "prisma:seed:development": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' dotenv -e .env -- ts-node seed.ts",
+    "prisma:migrate:production": "dotenv -e .env.production.local -- prisma migrate deploy",
+    "prisma:seed:production": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' dotenv -e .env.production.local -- ts-node seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "4.3.1"
+  },
+  "devDependencies": {
+    "prisma": "4.3.1",
+    "ts-node": "^10.9.1"
+  }
+}
