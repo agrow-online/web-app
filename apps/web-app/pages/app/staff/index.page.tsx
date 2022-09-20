@@ -1,3 +1,9 @@
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { HiArrowSmRight } from 'react-icons/hi';
+
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import {
   Box,
@@ -9,50 +15,21 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  Grid,
-  GridItem,
   HStack,
   Icon,
   IconButton,
-  LinkBox,
-  LinkOverlay,
-  Stack,
-  useDisclosure,
-  VStack,
 } from '@chakra-ui/react';
-import { Role } from '@prisma/client';
 import { getUser, supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
-import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import {
-  HiArrowRight,
-  HiArrowSmRight,
-  HiOutlineShoppingCart,
-  HiOutlineUserGroup,
-  HiOutlineUsers,
-  HiShoppingCart,
-  HiUsers,
-} from 'react-icons/hi';
 import { Screen } from '../../../components/screen/screen';
 import { Typography } from '../../../components/typography';
-import { CallToAction } from '../../../components/typography/typogaphy';
-import { supabase } from '../../../module/api/client';
 import { useBusinessQuery } from '../../../module/api/queries/use-profile';
-import { roleTextMap } from '../../../types/user';
+import { Employee, roleTextMap, User } from '../../../types/user';
 
 const StaffPage: NextPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
-  const { data, error, isLoading } = useBusinessQuery(user.id);
-  const [selectedEmployee, setSelectedEmployee] = useState<{
-    id: string;
-    firstName: string;
-    lastName: string;
-    role: Role;
-  } | null>(null);
+  const { data, error } = useBusinessQuery(user.id);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
   if (error) {
     return null;
@@ -119,13 +96,7 @@ const StaffPage: NextPage = ({ user }: InferGetServerSidePropsType<typeof getSer
   );
 };
 
-const EditEmployee = ({
-  employee,
-  onClose,
-}: {
-  employee: { id: string; firstName: string; lastName: string; role: Role };
-  onClose: () => void;
-}) => {
+const EditEmployee = ({ employee, onClose }: { employee: Employee; onClose: () => void }) => {
   return (
     <Drawer placement="bottom" onClose={onClose} isOpen={true} preserveScrollBarGap>
       <DrawerOverlay />

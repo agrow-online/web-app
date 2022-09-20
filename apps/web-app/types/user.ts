@@ -1,19 +1,21 @@
-export type User = {
+export interface User {
   id: string;
   firstName: string;
   lastName: string;
   imageUrl: string;
   role: Role;
   belongsToBusinessId: string;
-};
+}
 
-export type Business = {
+export interface Business {
   id: string;
   name: string;
   userId: string;
-};
+}
 
-enum Role {
+export interface Employee extends User {}
+
+export enum Role {
   ADMIN = 'ADMIN',
   EMPLOYEE = 'EMPLOYEE',
 }

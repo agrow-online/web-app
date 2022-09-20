@@ -6,55 +6,25 @@ import Head from 'next/head';
 import { ChakraProvider } from '@chakra-ui/react';
 import { theme } from '../theme/theme';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import router, { useRouter } from 'next/router';
+import router from 'next/router';
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { ErrorBoundary } from '../module/errors/error-boundary';
 
-interface Props {
-  children?: ReactNode;
-}
-
-interface State {
-  hasError: boolean;
-}
-
-class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false,
-  };
-
-  public static getDerivedStateFromError(_: Error): State {
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true };
-  }
-
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
-  }
-
-  public render() {
-    if (this.state.hasError) {
-      return <h1>Sorry.. there was an error</h1>;
-    }
-
-    return this.props.children;
-  }
-}
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: false },
+    mutations: { retry: false },
+  },
+  queryCache: new QueryCache({
+    onError: (error) => {
+      if ((error as any).code === 'PGRST301') {
+        router.push('/sign-in');
+      }
+    },
+  }),
+});
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-    queryCache: new QueryCache({
-      onError: (error) => {
-        if ((error as any).code === 'PGRST301') {
-          router.push('/sign-in');
-        }
-      },
-    }),
-  });
-
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
@@ -63,8 +33,7 @@ const App = ({ Component, pageProps }: AppProps) => {
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta name="robots" content="noindex" />
             <meta name="application-name" content="Agropreneur" />
-            <meta name="description" content="Best PWA App in the world" />
-            <meta name="theme-color" content="#000000" />{' '}
+            <meta name="theme-color" content="#ffffff" />
             <link rel="manifest" href="/manifest.json" />
             <link rel="shortcut icon" href="/favicon.ico" />
           </Head>

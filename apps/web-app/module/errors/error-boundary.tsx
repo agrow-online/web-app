@@ -1,0 +1,26 @@
+import { Component, ErrorInfo } from 'react';
+import { State, Props } from './types';
+
+export class ErrorBoundary extends Component<Props, State> {
+  public state: State = {
+    hasError: false,
+  };
+
+  public static getDerivedStateFromError(_: Error): State {
+    return { hasError: true };
+  }
+
+  // TODO: sentry
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Uncaught error:', error, errorInfo);
+  }
+
+  // TODO: error component (404, 500 pages)
+  public render() {
+    if (this.state.hasError) {
+      return <h1>Sorry.. there was an error</h1>;
+    }
+
+    return this.props.children;
+  }
+}
