@@ -1,6 +1,6 @@
 import { VStack, Text, Box, Heading, Button } from '@chakra-ui/react';
 import { withPageAuth, getUser } from '@supabase/auth-helpers-nextjs';
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -44,20 +44,17 @@ const Home: NextPage = () => {
 
 export default Home;
 
-export const getServerSideProps = withPageAuth({
-  authRequired: false,
-  async getServerSideProps(ctx) {
-    const { user } = await getUser(ctx);
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { user } = await getUser(context);
 
-    if (user) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/app/hub',
-        },
-      };
-    }
+  if (user) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/app/hub',
+      },
+    };
+  }
 
-    return { props: {} };
-  },
-});
+  return { props: {} };
+};

@@ -25,6 +25,7 @@ import {
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
 import {
   HiArrowSmRight,
@@ -40,6 +41,7 @@ import { TileLink } from './components/tile-link';
 const DashboardPage: NextPage = ({
   profile,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const router = useRouter();
   return (
     <Screen>
       <Head>
@@ -58,7 +60,12 @@ const DashboardPage: NextPage = ({
             </MenuButton>
             <Portal>
               <MenuList>
-                <MenuItem icon={<Icon as={HiLogout} />}>Logout</MenuItem>
+                <MenuItem
+                  icon={<Icon as={HiLogout} />}
+                  onClick={() => router.push('api/auth/logout')}
+                >
+                  Logout
+                </MenuItem>
               </MenuList>
             </Portal>
           </Menu>
@@ -92,13 +99,11 @@ const DashboardPage: NextPage = ({
 
 export default DashboardPage;
 
-export const getServerSideProps: GetServerSideProps = withPageAuth({
-  redirectTo: '/sign-in',
-  async getServerSideProps(ctx) {
-    // Access the user object
-    const { user } = await getUser(ctx);
-    const { data } = await supabaseServerClient(ctx).from('users').select('*').eq('id', user.id);
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  // Access the user object
+  const { user } = await getUser(ctx);
 
-    return { props: { user, profile: data?.[0] } };
-  },
-});
+  const { data } = await supabaseServerClient(ctx).from('users').select('*').eq('id', user?.id);
+
+  return { props: { user, profile: data?.[0] ?? null } };
+};

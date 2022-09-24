@@ -20,13 +20,13 @@ import { Typography } from '../../components/typography';
 // TODO cleanup
 const SignInPage: NextPage = () => {
   const toast = useToast();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
 
   const handleLogin = async (e: MouseEvent) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      setIsLoading(true);
       const { error } = await supabase.auth.signIn({ email });
 
       if (error) throw error;
@@ -45,7 +45,7 @@ const SignInPage: NextPage = () => {
       }
       toast({ title: errorMessage, status: 'error' });
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -74,8 +74,8 @@ const SignInPage: NextPage = () => {
                 You&apos;ll receive a magic link in your mail inbox to login without a password.
               </FormHelperText>
             </FormControl>
-            <Button type="submit" width="full" onClick={handleLogin}>
-              Submit
+            <Button type="submit" width="full" onClick={handleLogin} isLoading={isLoading}>
+              Sign in
             </Button>
           </form>
         </VStack>
