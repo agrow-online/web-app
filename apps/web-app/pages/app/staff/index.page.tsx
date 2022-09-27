@@ -24,12 +24,11 @@ import { getUser, supabaseServerClient, withPageAuth } from '@supabase/auth-help
 import { Screen } from '../../../components/screen/screen';
 import { Typography } from '../../../components/typography';
 import { useBusinessQuery } from '../../../module/api/queries/use-profile';
-import { Employee, roleTextMap, User } from '../../../types/user';
+import { roleTextMap } from '../../../types/user';
 
 const StaffPage: NextPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const { data, error } = useBusinessQuery(user.id);
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
   if (error) {
     return null;
@@ -38,7 +37,6 @@ const StaffPage: NextPage = ({ user }: InferGetServerSidePropsType<typeof getSer
   if (!data) {
     return null;
   }
-  // TODO: map roles
 
   return (
     <Screen contentIsNotPadded>
@@ -64,71 +62,33 @@ const StaffPage: NextPage = ({ user }: InferGetServerSidePropsType<typeof getSer
       <Screen.Content>
         <Flex direction="column" gap={'8px'} w="full">
           {data.employees.map((employee) => (
-            <Flex
-              direction="row"
-              justifyContent="space-between"
+            <Box
               key={employee.id}
               boxShadow=" 0px 8px 48px #EBEBEB, 0px 4px 8px rgba(89, 89, 89, 0.08), 0px 0px 1px rgba(89, 89, 89, 0.48);"
-              margin="0 !important"
               padding="24px"
               width="full"
-              onClick={() => setSelectedEmployee(employee)}
             >
-              <Box>
-                <Typography.CallToAction>
-                  {employee.firstName} {employee.lastName}
-                </Typography.CallToAction>
+              <Typography.CallToAction>
+                {employee.firstName} {employee.lastName}
+              </Typography.CallToAction>
 
-                <Typography.Body small color="brand.darkGrey">
-                  {roleTextMap[employee.role]}
-                </Typography.Body>
-              </Box>
-              <Icon as={HiArrowSmRight} />
-            </Flex>
+              <Typography.Body small color="brand.darkGrey">
+                {roleTextMap[employee.role]}
+              </Typography.Body>
+            </Box>
           ))}
         </Flex>
       </Screen.Content>
-
-      {selectedEmployee && (
-        <EditEmployee employee={selectedEmployee} onClose={() => setSelectedEmployee(null)} />
-      )}
     </Screen>
-  );
-};
-
-const EditEmployee = ({ employee, onClose }: { employee: Employee; onClose: () => void }) => {
-  return (
-    <Drawer placement="bottom" onClose={onClose} isOpen={true} preserveScrollBarGap>
-      <DrawerOverlay />
-      <DrawerContent borderRadius="16px 16px 0px 0px">
-        <DrawerHeader>
-          <Typography.Title>
-            {employee.firstName} {employee.lastName}
-          </Typography.Title>
-        </DrawerHeader>
-        <DrawerBody>
-          <Typography.Body small color="brand.darkGrey">
-            Role
-          </Typography.Body>
-          {roleTextMap[employee.role]}
-          <Typography.Body color="#B8322A" fontWeight="600" textAlign="center">
-            Remove from staff
-          </Typography.Body>
-        </DrawerBody>
-        <DrawerFooter>
-          <Button w="full">Save</Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
   );
 };
 
 export default StaffPage;
 
+// TODO: place logic in a shared place
 export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: '/sign-in',
   async getServerSideProps(ctx) {
-    // Access the user object
     const { user } = await getUser(ctx);
     const { data } = await supabaseServerClient(ctx).from('users').select('*').eq('id', user.id);
 
