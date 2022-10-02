@@ -1,13 +1,17 @@
-import path from 'path';
+import * as path from 'path';
 import { products } from './data';
 import { prisma, PrismaClient, Unit } from '@prisma/client';
 
 const client = new PrismaClient();
 
+// TODO: there are tabs, cc, oblets and other non-conform
 const splitVariantIntoQuantityAndUnit = (variant: string) => {
   const val = variant.match(/([\d\.]+)(.*)/);
   return [
-    { quantity: parseFloat(val?.[1]!), unit: val?.[2]!.replace(/ /g,'').toUpperCase() as Unit | 'UNIT' },
+    {
+      quantity: parseFloat(val?.[1]!),
+      unit: val?.[2]!.replace(/ /g, '').toUpperCase() as Unit | 'UNIT',
+    },
   ];
 };
 
@@ -25,7 +29,6 @@ const mappedProducts = products.map((product) => ({
 const mappedProductsWithVariants = mappedProducts.reduce((acc, { name, ...rest }) => {
   if (!acc[name]) {
     acc[name] = rest;
-    if()
   } else {
     acc[name].variants.push(rest.variants?.[0]);
   }
@@ -43,7 +46,9 @@ export const seed = async () => {
       const [key, value] = mappedProduct;
       const { variants, ...rest } = value;
       const subCategory = subCategories.find(
-        (subCategory) => subCategory.descriptiveName === rest.subCategory || 'Miscellaneous'
+        (subCategory) =>
+          subCategory.descriptiveName === rest.subCategory ||
+          subCategory.descriptiveName === 'Miscellaneous'
       )!;
 
       sub = subCategory;
@@ -98,7 +103,7 @@ export const seed = async () => {
     }
   }
 
-  console.log({ errors, erroredProducts: JSON.stringify(erroredProducts, null, 2) });
+  console.log({ erroredProducts: JSON.stringify(erroredProducts) });
 };
 
 seed();

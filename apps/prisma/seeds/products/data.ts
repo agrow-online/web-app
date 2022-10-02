@@ -10742,20 +10742,20 @@ export const products = [
   },
   {
     product_id: '71874368-94a2-4c35-945e-1d1bcdad2674',
-    name: 'Baraka potato 25kgs',
+    name: 'Baraka potato',
     description: 'Coming Soon',
     image: 'https://assets.wefarm.com/products/cli-onboarded/baraka-potato.jpg',
     sub_category: '',
     variant: [
       {
-        size: '25kgs',
+        size: '25kg',
       },
     ],
     brand: 'Baraka',
   },
   {
     product_id: '1dfa0aff-baa2-4dcd-9192-ce4dc18fbfc3',
-    name: 'Bayer Antracol  500g',
+    name: 'Bayer Antracol',
     description: 'Coming Soon',
     image: 'https://assets.wefarm.com/products/cli-onboarded/bayer-antracol.jpg',
     sub_category: '',
@@ -10950,20 +10950,20 @@ export const products = [
   },
   {
     product_id: 'b288e20e-3c68-4b69-bc10-9d0511b6318c',
-    name: 'Bimeda Albendazole 10% 1L',
+    name: 'Bimeda Albendazole 10%',
     description: 'Coming Soon',
     image: 'https://assets.wefarm.com/products/cli-onboarded/bimeda-albendazole10%.jpeg',
     sub_category: '',
     variant: [
       {
-        size: '10% 1L',
+        size: '1L',
       },
     ],
     brand: 'Bimeda Limited',
   },
   {
     product_id: '22645e9e-2785-4d4e-b46c-b4ce57ff5e45',
-    name: 'Bimeda Albendazole 10% 250ml',
+    name: 'Bimeda Albendazole 10%',
     description: 'Coming Soon',
     image: 'https://assets.wefarm.com/products/cli-onboarded/bimeda-albendazole10%.jpeg',
     sub_category: '',
@@ -10976,7 +10976,7 @@ export const products = [
   },
   {
     product_id: '204a7935-daa9-4121-bbf7-c142b6941170',
-    name: 'Bimeda Albendazole 10% 40ml',
+    name: 'Bimeda Albendazole 10%',
     description: 'Coming Soon',
     image: 'https://assets.wefarm.com/products/cli-onboarded/bimeda-albendazole10%.jpeg',
     sub_category: '',
@@ -10989,7 +10989,7 @@ export const products = [
   },
   {
     product_id: 'a1a9c139-1563-4b2c-b2fb-11847157dcaf',
-    name: 'Bimeda Albendazole 2.5% 120ml',
+    name: 'Bimeda Albendazole 2.5%',
     description: 'Coming Soon',
     image: 'https://assets.wefarm.com/products/cli-onboarded/bimeda-albendazole2.5%.jpeg',
     sub_category: '',
@@ -11002,7 +11002,7 @@ export const products = [
   },
   {
     product_id: 'ac6f6978-fb49-4161-b762-2c14da189bda',
-    name: 'Bimeda Albendazole 2.5% 1L',
+    name: 'Bimeda Albendazole 2.5%',
     description: 'Coming Soon',
     image: 'https://assets.wefarm.com/products/cli-onboarded/bimeda-albendazole2.5%.jpeg',
     sub_category: '',
@@ -11015,7 +11015,7 @@ export const products = [
   },
   {
     product_id: 'e9e42ba4-4504-4130-8d9a-582559d7cfba',
-    name: 'Bimeda Albendazole 2.5% 500ml',
+    name: 'Bimeda Albendazole 2.5%',
     description: 'Coming Soon',
     image: 'https://assets.wefarm.com/products/cli-onboarded/bimeda-albendazole2.5%.jpeg',
     sub_category: '',
@@ -11028,7 +11028,7 @@ export const products = [
   },
   {
     product_id: '07849f86-e296-4bdd-ade8-09f521c9eb50',
-    name: 'Bimeda curafluke 1l',
+    name: 'Bimeda curafluke',
     description: 'Coming Soon',
     image: 'https://assets.wefarm.com/products/cli-onboarded/bimeda-curafluke.jpg',
     sub_category: '',
@@ -11158,7 +11158,7 @@ export const products = [
   },
   {
     product_id: 'f8fce0cc-5410-4ea5-84a8-c48e82719b39',
-    name: 'CFAO  calcipril 25kgs',
+    name: 'CFAO  calcipril',
     description: 'Coming Soon',
     image: 'https://assets.wefarm.com/products/cli-onboarded/CFAO-calcipril.jpeg',
     sub_category: '',
