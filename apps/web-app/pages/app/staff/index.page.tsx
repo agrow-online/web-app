@@ -23,13 +23,14 @@ import { getUser, supabaseServerClient, withPageAuth } from '@supabase/auth-help
 
 import { Screen } from '../../../components/screen/screen';
 import { Typography } from '../../../components/typography';
-import { useBusinessQuery } from '../../../module/api/queries/use-profile';
+import { useBusinessQuery } from '../../../modules/api/queries/use-profile';
 import { roleTextMap } from '../../../types/user';
 
 const StaffPage: NextPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
-  const { data, error } = useBusinessQuery(user.id);
+  const { data, error } = useBusinessQuery();
 
+  console.log({ data });
   if (error) {
     return null;
   }

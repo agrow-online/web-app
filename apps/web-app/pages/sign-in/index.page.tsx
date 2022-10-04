@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import { useState, MouseEvent } from 'react';
 import Head from 'next/head';
 import { getUser, withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { supabase } from '../../module/api/client';
+import { supabase } from '../../modules/api/client';
 import { Screen } from '../../components/screen/screen';
 import {
   Box,

@@ -8,7 +8,7 @@ import { theme } from '../theme/theme';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import router from 'next/router';
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { ErrorBoundary } from '../module/errors/error-boundary';
+import { ErrorBoundary } from '../modules/errors/error-boundary';
 
 const queryClient = new QueryClient({
   defaultOptions: {

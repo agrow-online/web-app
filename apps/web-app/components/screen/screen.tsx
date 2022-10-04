@@ -22,7 +22,7 @@ import { HiOutlineBell, HiMenu, HiLogout, HiPhotograph } from 'react-icons/hi';
 import { Children, createContext, useContext } from 'react';
 import { ComponentWithChildren } from '../../types/base';
 import { ScreenComponent, ScreenProps, ScreenContextProps } from './types';
-import { useProfileQuery } from '../../module/api/queries/use-profile';
+import { useProfileQuery } from '../../modules/api/queries/use-profile';
 import { Typography } from '../typography';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 const ScreenContext = createContext<ScreenProps & ScreenContextProps>({
