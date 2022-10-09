@@ -9,6 +9,7 @@ import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-qu
 import router from 'next/router';
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { ErrorBoundary } from '../modules/errors/error-boundary';
+// import 'react-virtualized-auto-sizer/styles.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,30 +1,9 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  Heading,
-  HStack,
-  Icon,
-  IconButton,
-  Link,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Portal,
-  useBreakpointValue,
-  useDisclosure,
-  VStack,
-} from '@chakra-ui/react';
-import { HiOutlineBell, HiMenu, HiLogout, HiPhotograph } from 'react-icons/hi';
-import { Children, createContext, useContext } from 'react';
+import { Flex, Portal, useBreakpointValue } from '@chakra-ui/react';
+
+import { createContext, useContext } from 'react';
 import { ComponentWithChildren } from '../../types/base';
 import { ScreenComponent, ScreenProps, ScreenContextProps } from './types';
-import { useProfileQuery } from '../../modules/api/queries/use-profile';
-import { Typography } from '../typography';
-import { ChevronDownIcon } from '@chakra-ui/icons';
+
 const ScreenContext = createContext<ScreenProps & ScreenContextProps>({
   isMobile: false,
   headerIsHidden: false,
@@ -93,15 +72,23 @@ const Content: ComponentWithChildren = ({ children }) => {
 
 const Footer: ComponentWithChildren = ({ children }) => {
   return (
-    <Box
-      padding={6}
-      width="full"
-      justifyContent="flex-end"
-      background={'white'}
-      marginTop="0 !important"
-    >
-      {children}
-    </Box>
+    <Portal>
+      <Flex
+        width="full"
+        padding="12px"
+        background="white"
+        position="fixed"
+        bottom={0}
+        height="80px"
+        alignItems="center"
+        justifyContent="center"
+        outline="1px solid #D0D0D0"
+        boxShadow="0px -2px 4px rgba(11, 12, 12, 0.1);"
+        borderRadius="12px 12px 0px 0px"
+      >
+        {children}
+      </Flex>
+    </Portal>
   );
 };
 
