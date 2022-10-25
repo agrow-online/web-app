@@ -7,7 +7,7 @@ import { Box, Flex, HStack, IconButton } from '@chakra-ui/react';
 import { Screen } from '../../../components/screen/screen';
 import { Typography } from '../../../components/typography';
 import { useBusinessQuery } from '../../../modules/api/queries/use-profile';
-import { roleTextMap } from '../../../types/user';
+import { Role, roleTextMap } from '../../../types/user';
 
 const StaffPage: NextPage = () => {
   const router = useRouter();
@@ -44,7 +44,7 @@ const StaffPage: NextPage = () => {
       </Screen.Header>
       <Screen.Content>
         <Flex direction="column" gap={'8px'} w="full">
-          {data.employees.map((employee) => (
+          {data.employees.map((employee: any) => (
             <Box
               key={employee.id}
               boxShadow=" 0px 8px 48px #EBEBEB, 0px 4px 8px rgba(89, 89, 89, 0.08), 0px 0px 1px rgba(89, 89, 89, 0.48);"
@@ -56,7 +56,7 @@ const StaffPage: NextPage = () => {
               </Typography.CallToAction>
 
               <Typography.Body small color="brand.darkGrey">
-                {roleTextMap[employee.role]}
+                {roleTextMap[employee.role as Role]}
               </Typography.Body>
             </Box>
           ))}

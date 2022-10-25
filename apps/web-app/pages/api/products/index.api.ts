@@ -4,7 +4,7 @@ import { DBProduct, Product } from '../../../types/products';
 import { mapProductVariantsToProducts } from './utils';
 
 export default withApiAuth(async function products(req, res) {
-  const supabaseServerClient = createServerSupabaseClient<Database>({ req, res });
+  const supabaseServerClient = createServerSupabaseClient({ req, res });
   const {
     query: { category },
     method,
@@ -27,6 +27,7 @@ export default withApiAuth(async function products(req, res) {
         .order('name')
         .range(0, 50); // TODO pagination
 
+      //@ts-ignore
       const products: Product[] = data ? mapProductVariantsToProducts(data) : [];
 
       return res.json({ products, count });
