@@ -8,7 +8,7 @@ import router from 'next/router';
 import React, { Component, ErrorInfo, ReactNode, useState } from 'react';
 import { ErrorBoundary } from '../modules/errors/error-boundary';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { createBrowserSupabaseClient, Session } from '@supabase/auth-helpers-nextjs';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,7 +29,7 @@ const queryClient = new QueryClient({
   }),
 });
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps }: AppProps<{ initialSession: Session }>) => {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
   return (

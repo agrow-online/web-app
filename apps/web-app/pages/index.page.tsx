@@ -46,7 +46,7 @@ export const getServerSideProps = withPageAuth({
   redirectTo: '/foo',
   authRequired: false,
   // @ts-ignore
-  // TODO: raise issue, if no user lib returns undefined, which is a nono for NextJS
+  // TODO: raise issue, if no user lib returns undefined, which is a nono for NextJ
   async getServerSideProps(ctx, supabase) {
     const {
       data: { user },
