@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import axios from 'axios';
 import { Database } from '../../types/database';
 
 export const supabase = createClient(

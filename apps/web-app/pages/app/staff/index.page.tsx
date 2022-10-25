@@ -1,36 +1,18 @@
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { HiArrowSmRight } from 'react-icons/hi';
-
 import { ChevronLeftIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  Flex,
-  HStack,
-  Icon,
-  IconButton,
-} from '@chakra-ui/react';
-import { getUser, supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { Box, Flex, HStack, IconButton } from '@chakra-ui/react';
 
 import { Screen } from '../../../components/screen/screen';
 import { Typography } from '../../../components/typography';
 import { useBusinessQuery } from '../../../modules/api/queries/use-profile';
 import { roleTextMap } from '../../../types/user';
 
-const StaffPage: NextPage = ({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const StaffPage: NextPage = () => {
   const router = useRouter();
   const { data, error } = useBusinessQuery();
 
-  console.log({ data });
   if (error) {
     return null;
   }
@@ -42,7 +24,7 @@ const StaffPage: NextPage = ({ user }: InferGetServerSidePropsType<typeof getSer
   return (
     <Screen contentIsNotPadded>
       <Head>
-        <title>Staff | Agropreneur</title>
+        <title>Staff | agrow</title>
       </Head>
 
       <Screen.Header>
@@ -85,14 +67,3 @@ const StaffPage: NextPage = ({ user }: InferGetServerSidePropsType<typeof getSer
 };
 
 export default StaffPage;
-
-// TODO: place logic in a shared place
-export const getServerSideProps: GetServerSideProps = withPageAuth({
-  redirectTo: '/sign-in',
-  async getServerSideProps(ctx) {
-    const { user } = await getUser(ctx);
-    const { data } = await supabaseServerClient(ctx).from('users').select('*').eq('id', user.id);
-
-    return { props: { user, profile: data?.[0] } };
-  },
-});

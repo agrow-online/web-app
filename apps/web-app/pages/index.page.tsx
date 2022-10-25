@@ -1,17 +1,15 @@
 import { VStack, Text, Box, Heading, Button } from '@chakra-ui/react';
-import { withPageAuth, getUser } from '@supabase/auth-helpers-nextjs';
-import type { GetServerSideProps, NextPage } from 'next';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 const Home: NextPage = () => {
-  const router = useRouter();
-
   return (
     <>
       <Head>
-        <title>Agropreneur</title>
+        <title>agrow</title>
         <meta name="description" content="The operating system for farmer supply stores" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -30,7 +28,7 @@ const Home: NextPage = () => {
             Coming soon
           </Text>
           <Heading as="h1" size="2xl">
-            Agropreneur
+            agrow
           </Heading>
           <Heading as="h2" size="md" fontWeight="normal" my={10} color="#6b7280">
             The operating system for farmer supply stores
@@ -44,17 +42,23 @@ const Home: NextPage = () => {
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { user } = await getUser(context);
+export const getServerSideProps = withPageAuth({
+  redirectTo: '/foo',
+  authRequired: false,
+  // @ts-ignore
+  // TODO: raise issue, if no user lib returns undefined, which is a nono for NextJS
+  async getServerSideProps(ctx, supabase) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (user) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/app/hub',
-      },
-    };
-  }
-
-  return { props: {} };
-};
+    if (user) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/app/hub',
+        },
+      };
+    }
+  },
+});

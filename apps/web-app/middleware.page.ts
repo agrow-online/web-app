@@ -1,6 +1,6 @@
 import { withMiddlewareAuth } from '@supabase/auth-helpers-nextjs';
 
-console.log('AM I RUNNING');
+console.log('AM I jfffffddddddddddddddddddddddddddddddddddddddddddddddddddddddddddRUNNING');
 export const middleware = withMiddlewareAuth({ redirectTo: '/sign-in' });
 
 export const config = {

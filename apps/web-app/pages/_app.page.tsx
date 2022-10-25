@@ -1,19 +1,23 @@
 import '../theme/globals.css';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { UserProvider } from '@supabase/auth-helpers-react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ChakraProvider } from '@chakra-ui/react';
 import { theme } from '../theme/theme';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import router from 'next/router';
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode, useState } from 'react';
 import { ErrorBoundary } from '../modules/errors/error-boundary';
-// import 'react-virtualized-auto-sizer/styles.css';
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { retry: false },
+    queries: {
+      retry: false,
+      onError: (error) => {
+        console.log({});
+      },
+    },
     mutations: { retry: false },
   },
   queryCache: new QueryCache({
@@ -26,14 +30,19 @@ const queryClient = new QueryClient({
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+
   return (
     <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <UserProvider supabaseClient={supabaseClient}>
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
+      >
+        <QueryClientProvider client={queryClient}>
           <Head>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta name="robots" content="noindex" />
-            <meta name="application-name" content="Agropreneur" />
+            <meta name="application-name" content="agrow" />
             <meta name="theme-color" content="#ffffff" />
             <link rel="manifest" href="/manifest.json" />
             <link rel="shortcut icon" href="/favicon.ico" />
@@ -41,8 +50,8 @@ const App = ({ Component, pageProps }: AppProps) => {
           <ChakraProvider theme={theme}>
             <Component {...pageProps} />
           </ChakraProvider>
-        </UserProvider>
-      </QueryClientProvider>
+        </QueryClientProvider>
+      </SessionContextProvider>
     </ErrorBoundary>
   );
 };

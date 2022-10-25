@@ -15,7 +15,7 @@ const getUser = async (userId?: string | null) => {
 };
 
 export const useProfileQuery = () => {
-  const { user } = useUser();
+  const user = useUser();
 
   return useQuery(['user'], () => getUser(user?.id), {
     enabled: !!user?.id,

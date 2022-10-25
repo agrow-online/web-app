@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { useState, MouseEvent } from 'react';
 import Head from 'next/head';
-import { getUser, withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { supabase } from '../../modules/api/client';
 import { Screen } from '../../components/screen/screen';
 import {
@@ -27,7 +27,7 @@ const SignInPage: NextPage = () => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const { error } = await supabase.auth.signIn({ email });
+      const { error } = await supabase.auth.signInWithOtp({ email });
 
       if (error) throw error;
       toast({ title: 'Check your email inbox for the login link.', status: 'success' });
@@ -52,7 +52,7 @@ const SignInPage: NextPage = () => {
   return (
     <Screen headerIsHidden contentIsCentered>
       <Head>
-        <title>Sign in | Agropreneur</title>
+        <title>Sign in | agrow</title>
       </Head>
 
       <Screen.Content>
@@ -87,9 +87,13 @@ const SignInPage: NextPage = () => {
 export default SignInPage;
 
 export const getServerSideProps = withPageAuth({
+  redirectTo: '/foo',
   authRequired: false,
-  async getServerSideProps(ctx) {
-    const { user } = await getUser(ctx);
+  // @ts-ignore
+  async getServerSideProps(ctx, supabase) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (user) {
       return {
@@ -99,7 +103,5 @@ export const getServerSideProps = withPageAuth({
         },
       };
     }
-
-    return { props: {} };
   },
 });

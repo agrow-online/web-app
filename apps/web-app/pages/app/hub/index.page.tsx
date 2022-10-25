@@ -15,16 +15,9 @@ import {
   MenuList,
   Portal,
 } from '@chakra-ui/react';
-import {
-  withPageAuth,
-  getUser,
-  supabaseServerClient,
-  supabaseClient,
-} from '@supabase/auth-helpers-nextjs';
-
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
 import {
@@ -45,7 +38,7 @@ const DashboardPage: NextPage = ({
   return (
     <Screen>
       <Head>
-        <title>Dashboard | Agropreneur</title>
+        <title>Dashboard | agrow</title>
       </Head>
 
       <Screen.Header>
@@ -99,11 +92,15 @@ const DashboardPage: NextPage = ({
 
 export default DashboardPage;
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // Access the user object
-  const { user } = await getUser(ctx);
+export const getServerSideProps = withPageAuth({
+  redirectTo: '/sign-in',
+  async getServerSideProps(ctx, supabase) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  const { data } = await supabaseServerClient(ctx).from('users').select('*').eq('id', user?.id);
+    const { data } = await supabase.from('users').select('*').eq('id', user?.id);
 
-  return { props: { user, profile: data?.[0] ?? null } };
-};
+    return { props: { user, profile: data?.[0] ?? null } };
+  },
+});

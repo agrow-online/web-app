@@ -1,21 +1,35 @@
-import { withApiAuth, supabaseServerClient, getUser } from '@supabase/auth-helpers-nextjs';
-import { supabase } from '../../../modules/api/client';
-import { Business, User } from '../../../types/user';
+import { createServerSupabaseClient, withApiAuth } from '@supabase/auth-helpers-nextjs';
+import { Database } from '../../../types/database';
+import { DBProduct, Product } from '../../../types/products';
+import { mapProductVariantsToProducts } from './utils';
 
-export default withApiAuth(async function business(req, res) {
+export default withApiAuth(async function products(req, res) {
+  const supabaseServerClient = createServerSupabaseClient<Database>({ req, res });
   const {
-    query: { id },
+    query: { category },
     method,
   } = req;
 
   switch (method) {
     case 'GET':
-      const { data, error } = await supabaseServerClient({ req, res })
-        .from<Business>('products')
-        .select('*, product_variants(*)');
+      const { count } = await supabaseServerClient
+        .from('product_variants')
+        .select('*', { count: 'exact', head: true });
 
-      console.log({ data });
-      return res.json(data);
+      const { data } = await supabaseServerClient
+        .from('products')
+        .select(
+          `*, variants:product_variants!inner(*), 
+              brand: product_brands!inner(id, name), 
+              subCategory: product_sub_categories!inner(id, descriptiveName), 
+              category: product_categories!inner(id, name))`
+        )
+        .order('name')
+        .range(0, 50); // TODO pagination
+
+      const products: Product[] = data ? mapProductVariantsToProducts(data) : [];
+
+      return res.json({ products, count });
       break;
 
     default:
