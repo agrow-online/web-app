@@ -61,6 +61,7 @@ const Content: ComponentWithChildren = ({ children }) => {
   return (
     <Flex
       justify={contentIsCentered ? 'center' : 'flex-start'}
+      flexDirection="column"
       width="full"
       marginTop={headerIsHidden ? 0 : '70px'}
       padding={contentIsNotPadded ? 0 : '24px'}

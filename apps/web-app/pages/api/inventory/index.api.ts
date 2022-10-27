@@ -17,14 +17,15 @@ export default withApiAuth(async function products(req, res) {
         .select('*', { count: 'exact', head: true });
 
       const { data } = await supabaseServerClient
-        .from('products')
+        .from('inventory')
         .select(
           `*, variants:product_variants!inner(*), 
               brand: product_brands!inner(id, name), 
               subCategory: product_sub_categories!inner(id, descriptiveName), 
               category: product_categories!inner(id, name))`
         )
-        .order('name');
+        .order('name')
+        .range(0, 50); // TODO pagination
 
       //@ts-ignore
       const products: Product[] = data ? mapProductVariantsToProducts(data) : [];

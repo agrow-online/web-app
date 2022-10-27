@@ -1,32 +1,23 @@
 import {
   Avatar,
-  Box,
   Grid,
   GridItem,
   HStack,
   Icon,
-  LinkBox,
   Link,
-  LinkOverlay,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   Portal,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { createBrowserSupabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
-import {
-  HiArrowSmRight,
-  HiLogout,
-  HiOutlineClipboardList,
-  HiOutlineUsers,
-  HiPhotograph,
-} from 'react-icons/hi';
+import { HiLogout, HiOutlineClipboardList, HiOutlineUsers } from 'react-icons/hi';
 import { Screen } from '../../../components/screen/screen';
 import { Typography } from '../../../components/typography';
 import { TileLink } from './components/tile-link';
@@ -35,6 +26,12 @@ const DashboardPage: NextPage = ({
   profile,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+
+  const logout = async () => {
+    await supabaseClient.auth.signOut();
+    router.push('/');
+  };
   return (
     <Screen>
       <Head>
@@ -53,10 +50,7 @@ const DashboardPage: NextPage = ({
             </MenuButton>
             <Portal>
               <MenuList>
-                <MenuItem
-                  icon={<Icon as={HiLogout} />}
-                  onClick={() => router.push('api/auth/logout')}
-                >
+                <MenuItem icon={<Icon as={HiLogout} />} onClick={logout}>
                   Logout
                 </MenuItem>
               </MenuList>
@@ -75,15 +69,17 @@ const DashboardPage: NextPage = ({
               tileColor="#F0F9FF"
             />
           </GridItem>
-          <GridItem>
-            <TileLink
-              text="Staff"
-              href="/app/staff"
-              icon={HiOutlineUsers}
-              iconColor="#A92938"
-              tileColor="#FDF0F0"
-            />
-          </GridItem>
+          {profile.role === 'ADMIN' ? (
+            <GridItem>
+              <TileLink
+                text="Staff"
+                href="/app/staff"
+                icon={HiOutlineUsers}
+                iconColor="#A92938"
+                tileColor="#FDF0F0"
+              />
+            </GridItem>
+          ) : null}
         </Grid>
       </Screen.Content>
     </Screen>
