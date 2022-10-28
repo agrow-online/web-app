@@ -41,58 +41,62 @@ const CataloguePage: NextPage = () => {
         </HStack>
       </Screen.Header>
       <Screen.Content>
-        <HStack
-          justify="space-between"
-          background="white"
-          boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1);"
-          paddingX="16px"
-          paddingY="12px"
-        >
-          <Typography.Body>
-            Products: <strong>{data.count}</strong>
-          </Typography.Body>
-          {/* 
+        {!!data.products.length ? (
+          <>
+            <HStack
+              justify="space-between"
+              background="white"
+              boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1);"
+              paddingX="16px"
+              paddingY="12px"
+            >
+              <Typography.Body>
+                Products: <strong>{data.products.length}</strong>
+              </Typography.Body>
+              {/* 
           <Link color="brand.primary" fontWeight="bold">
             Filter
           </Link> */}
-        </HStack>
+            </HStack>
 
-        <Virtuoso
-          style={{ height: '100%' }}
-          totalCount={data.count}
-          itemContent={(index) => {
-            const product = data?.products[index];
+            <Virtuoso
+              style={{ height: '100%' }}
+              totalCount={data.count}
+              itemContent={(index) => {
+                const product = data.products[index];
 
-            return (
-              <Box
-                key={product?.id}
-                boxShadow="0px 8px 48px #EBEBEB, 0px 4px 8px rgba(89, 89, 89, 0.08), 0px 0px 1px rgba(89, 89, 89, 0.48)"
-                marginBottom="8px"
-                padding="16px"
-                width="full"
-                // onClick={() =>
-                //   router.push(`/app/catalogue/add/${product ? encodeURIComponent(product.id) : ''}`)
-                // }
-              >
-                <Typography.CallToAction>
-                  {product?.name} ({product?.quantity}
-                  {product?.unit.toLowerCase()})
-                </Typography.CallToAction>
-                <Typography.Body small color="brand.darkGrey">
-                  {product?.brand.name}
-                </Typography.Body>
-                <Flex gap="8px" mt="16px" flexWrap="wrap">
-                  <Badge paddingY="8px" paddingX="16px" rounded="full">
-                    {product?.category.name}
-                  </Badge>
-                  <Badge paddingY="8px" paddingX="16px" rounded="full">
-                    {product?.subCategory.descriptiveName}
-                  </Badge>
-                </Flex>
-              </Box>
-            );
-          }}
-        />
+                return (
+                  <Box
+                    key={product.id}
+                    boxShadow="0px 8px 48px #EBEBEB, 0px 4px 8px rgba(89, 89, 89, 0.08), 0px 0px 1px rgba(89, 89, 89, 0.48)"
+                    marginBottom="8px"
+                    padding="16px"
+                    width="full"
+                    // onClick={() =>
+                    //   router.push(`/app/catalogue/add/${product ? encodeURIComponent(product.id) : ''}`)
+                    // }
+                  >
+                    <Typography.CallToAction>
+                      {product.name} ({product.quantity}
+                      {product.unit.toLowerCase()})
+                    </Typography.CallToAction>
+                    <Typography.Body small color="brand.darkGrey">
+                      {product.brand.name}
+                    </Typography.Body>
+                    <Flex gap="8px" mt="16px" flexWrap="wrap">
+                      <Badge paddingY="8px" paddingX="16px" rounded="full">
+                        {product.category.name}
+                      </Badge>
+                      <Badge paddingY="8px" paddingX="16px" rounded="full">
+                        {product.subCategory.descriptiveName}
+                      </Badge>
+                    </Flex>
+                  </Box>
+                );
+              }}
+            />
+          </>
+        ) : null}
       </Screen.Content>
     </Screen>
   );

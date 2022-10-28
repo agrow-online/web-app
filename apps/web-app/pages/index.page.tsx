@@ -13,17 +13,27 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useUser } from '@supabase/auth-helpers-react';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import Router, { useRouter } from 'next/router';
+import { FormEvent, useEffect, useState } from 'react';
 import { Typography } from '../components/typography';
 
 const Home: NextPage = () => {
   const [email, setEmail] = useState('');
   const toast = useToast();
+  const user = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push('/app/hub');
+    }
+  }, [user, router]);
 
   const mutation = useMutation(
     async (email: string) => {
