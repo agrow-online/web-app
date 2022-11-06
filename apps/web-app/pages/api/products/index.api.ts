@@ -6,9 +6,21 @@ import { mapProductVariantsToProducts } from './utils';
 export default withApiAuth(async function products(req, res) {
   const supabaseServerClient = createServerSupabaseClient({ req, res });
   const {
-    query: { category },
+    query: { from: queryFrom, to: queryTo },
     method,
   } = req;
+
+  const from = !!queryFrom
+    ? Array.isArray(queryFrom)
+      ? parseInt(queryFrom[0])
+      : parseInt(queryFrom)
+    : undefined;
+
+  const to = !!queryTo
+    ? Array.isArray(queryTo)
+      ? parseInt(queryTo[0])
+      : parseInt(queryTo)
+    : undefined;
 
   switch (method) {
     case 'GET':
@@ -16,7 +28,7 @@ export default withApiAuth(async function products(req, res) {
         .from('product_variants')
         .select('*', { count: 'exact', head: true });
 
-      const { data } = await supabaseServerClient
+      let query = supabaseServerClient
         .from('products')
         .select(
           `*, variants:product_variants!inner(*), 
@@ -25,6 +37,12 @@ export default withApiAuth(async function products(req, res) {
               category: product_categories!inner(id, name))`
         )
         .order('name');
+
+      if (from && to) {
+        query.range(from, to);
+      }
+
+      const { data } = await query;
 
       //@ts-ignore
       const products: Product[] = data ? mapProductVariantsToProducts(data) : [];

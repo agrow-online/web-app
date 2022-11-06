@@ -1,15 +1,21 @@
 import { ChevronLeftIcon } from '@chakra-ui/icons';
-import { HStack, IconButton, Flex, Button, Text, Box, Badge, Link } from '@chakra-ui/react';
+import { HStack, IconButton, Flex, Box, Badge } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { Typography } from '../../../components/typography';
 import { Screen } from '../../../components/screen/screen';
 import { useProductsQuery } from '../../../modules/api/queries/use-products';
 import { Virtuoso } from 'react-virtuoso';
+import { useMemo } from 'react';
 
-const CataloguePage: NextPage = () => {
-  const { data, error, isLoading } = useProductsQuery();
+const ProductsPage: NextPage = () => {
+  const router = useRouter();
+  const { page } = router.query as { page: number | undefined };
+
+  const { data, error, isLoading } = useProductsQuery(page ? page : undefined);
+
+  const flatData = useMemo(() => data?.pages.flatMap((page) => page.products), [data]);
 
   if (isLoading) {
     return null;
@@ -19,6 +25,7 @@ const CataloguePage: NextPage = () => {
     return null;
   }
 
+  console.log({ page });
   return (
     <Screen contentIsNotPadded>
       <Head>
@@ -41,7 +48,7 @@ const CataloguePage: NextPage = () => {
         </HStack>
       </Screen.Header>
       <Screen.Content>
-        {!!data.products.length ? (
+        {!!data.pages.length ? (
           <>
             <HStack
               justify="space-between"
@@ -51,9 +58,9 @@ const CataloguePage: NextPage = () => {
               paddingY="12px"
             >
               <Typography.Body>
-                Products: <strong>{data.products.length}</strong>
+                Products: <strong>{data.pages[0].count}</strong>
               </Typography.Body>
-              {/* 
+              {/*
           <Link color="brand.primary" fontWeight="bold">
             Filter
           </Link> */}
@@ -61,20 +68,36 @@ const CataloguePage: NextPage = () => {
 
             <Virtuoso
               style={{ height: '100%' }}
-              totalCount={data.count}
-              itemContent={(index) => {
-                const product = data.products[index];
-
+              startReached={() =>
+                router.push(
+                  {
+                    pathname: '/app/products',
+                    query: { page: page && page >= 1 ? page - 1 : 1 },
+                  },
+                  '/app/products',
+                  { shallow: true }
+                )
+              }
+              endReached={() => {
+                router.push(
+                  { pathname: '/app/products', query: { page: page ? page + 1 : 1 } },
+                  '/app/products',
+                  { shallow: true }
+                );
+              }}
+              data={flatData}
+              itemContent={(_, product) => {
                 return (
                   <Box
-                    key={product.id}
                     boxShadow="0px 8px 48px #EBEBEB, 0px 4px 8px rgba(89, 89, 89, 0.08), 0px 0px 1px rgba(89, 89, 89, 0.48)"
                     marginBottom="8px"
                     padding="16px"
                     width="full"
-                    // onClick={() =>
-                    //   router.push(`/app/catalogue/add/${product ? encodeURIComponent(product.id) : ''}`)
-                    // }
+                    onClick={() =>
+                      router.push(
+                        `/app/products/add/${product ? encodeURIComponent(product.id) : ''}`
+                      )
+                    }
                   >
                     <Typography.CallToAction>
                       {product.name} ({product.quantity}
@@ -102,4 +125,4 @@ const CataloguePage: NextPage = () => {
   );
 };
 
-export default CataloguePage;
+export default ProductsPage;

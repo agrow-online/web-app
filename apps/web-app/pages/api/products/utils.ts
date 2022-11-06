@@ -28,3 +28,11 @@ export const mapProductVariantsToProducts = (data: DBProduct[]) => {
 
   return products;
 };
+
+export const getPagination = ({ page = 0, size = 100 }: { page?: number; size?: number }) => {
+  const limit = +size;
+  const from = page ? page * limit : 0;
+  const to = page ? from + size : size;
+
+  return { from, to };
+};

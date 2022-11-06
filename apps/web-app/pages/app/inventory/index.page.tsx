@@ -10,7 +10,7 @@ import { useInventoryQuery } from '../../../modules/api/queries/use-inventory';
 import { useCallback, useRef } from 'react';
 import { Product } from '../../../types/products';
 
-const CataloguePage: NextPage = () => {
+const InventoryPage: NextPage = () => {
   const { data, error, isLoading } = useInventoryQuery();
 
   if (isLoading) {
@@ -43,7 +43,7 @@ const CataloguePage: NextPage = () => {
         </HStack>
       </Screen.Header>
       <Screen.Content>
-        <Flex direction="column" gap={'8px'} w="full">
+        <Flex direction="column" gap="8px" w="full">
           <Center height="100%" padding="16px">
             no inventory items
           </Center>
@@ -54,7 +54,7 @@ const CataloguePage: NextPage = () => {
           width="full"
           paddingX="12px"
           paddingY="24px"
-          onClick={() => router.push('/app/catalogue')}
+          onClick={() => router.push('/app/products')}
         >
           Add new product
         </Button>
@@ -63,4 +63,4 @@ const CataloguePage: NextPage = () => {
   );
 };
 
-export default CataloguePage;
+export default InventoryPage;
